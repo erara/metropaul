@@ -188,12 +188,9 @@ public class WorkflowExportDatabase implements IWorkflow {
 			}
 		} catch (MalformedURLException e) {
 			logger.error(e.getMessage());
-			e.printStackTrace();
 		} catch (URISyntaxException e) {
 			logger.error(e.getMessage());
-			e.printStackTrace();
 		} catch (IOException e) {
-			e.printStackTrace();
 			throw new HerculeTechnicalException("Erreur création du fichier networks.sql");
 		}
 
