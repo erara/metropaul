@@ -106,6 +106,11 @@ CREATE TABLE T_STOP_POINT (
     PRIMARY KEY (id_stop_point)
 );
 
+CREATE TABLE T_ITINERAIRES (
+	id_stop_area_from INT NOT NULL,
+	itineraire VARCHAR(500)
+);
+
 
 
 

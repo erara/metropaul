@@ -80,7 +80,7 @@ public class HerculeDao {
 
 		if(!existLine(line)) {
 
-			logger.info("insertLine " + line.getId());
+//			logger.info("insertLine " + line.getId());
 
 			StringBuilder query = new StringBuilder("insert into ");
 			query.append(DBConstantes.T_LINE);
@@ -148,7 +148,7 @@ public class HerculeDao {
 
 		if(!existNetwork(network)) {
 
-			logger.info("insertNetwork " + network.getId());
+//			logger.info("insertNetwork " + network.getId());
 
 			StringBuilder query = new StringBuilder("insert into ");
 			query.append(DBConstantes.T_NETWORK);
@@ -202,7 +202,7 @@ public class HerculeDao {
 
 		if(!existRoute(route)) {
 
-			logger.info("insertRoute " + route.getId());
+//			logger.info("insertRoute " + route.getId());
 
 			StringBuilder query = new StringBuilder("insert into ");
 			query.append(DBConstantes.T_ROUTE);
@@ -264,7 +264,7 @@ public class HerculeDao {
 
 		if(!existStopArea(stopArea)) {
 
-			logger.info("insertStopArea " + stopArea.getId());
+//			logger.info("insertStopArea " + stopArea.getId());
 
 			StringBuilder query = new StringBuilder("insert into ");
 			query.append(DBConstantes.T_STOP_AREA);
@@ -306,7 +306,7 @@ public class HerculeDao {
 				close(null, pstmt, res);
 			}
 		} else {
-			logger.warn("Le stopArea  " + stopArea.getName() + " existe déjà");
+//			logger.warn("Le stopArea  " + stopArea.getName() + " existe déjà");
 
 			StringBuilder query = new StringBuilder("select id_stop_area from ");
 			query.append(DBConstantes.T_STOP_AREA);
@@ -347,7 +347,7 @@ public class HerculeDao {
 
 
 		if(!existStopAreaLine(idStopArea, idLine)) {
-			logger.info("insertStopAreaLine " + idStopArea + "/"+ idLine);
+//			logger.info("insertStopAreaLine " + idStopArea + "/"+ idLine);
 
 			StringBuilder query = new StringBuilder("insert into ");
 			query.append(DBConstantes.T_STOP_AREA_LINE);
@@ -397,7 +397,7 @@ public class HerculeDao {
 		if(!existStopAreaRoute(idStopArea, idRoute)) {
 
 
-			logger.info("insertStopAreaRoute " + idStopArea + "/"+ idRoute);
+//			logger.info("insertStopAreaRoute " + idStopArea + "/"+ idRoute);
 
 			StringBuilder query = new StringBuilder("insert into ");
 			query.append(DBConstantes.T_STOP_AREA_ROUTE);
@@ -438,7 +438,7 @@ public class HerculeDao {
 		if(!existStopPoint(stopPoint, idStopArea, idRoute)) {
 
 
-			logger.info("insertStopPoint " + stopPoint.getId() + "/"+ idStopArea + "/" + idRoute);
+//			logger.info("insertStopPoint " + stopPoint.getId() + "/"+ idStopArea + "/" + idRoute);
 
 			StringBuilder query = new StringBuilder("insert into ");
 			query.append(DBConstantes.T_STOP_POINT);
@@ -484,6 +484,39 @@ public class HerculeDao {
 			logger.info("insertStopPoint " + stopPoint.getId() + "/"+ idStopArea + "/" + idRoute +" existe déjà");
 
 		}
+	}
+	
+	public synchronized static void insertItineraires(int id_stop_area_from, List<StringBuilder> itineraires) throws HerculeTechnicalException {
+
+		for(StringBuilder builder : itineraires) {
+//			logger.info("insertItineraire " + id_stop_area_from);
+
+			StringBuilder query = new StringBuilder("insert into ");
+			query.append(DBConstantes.T_ITINERAIRES);
+			query.append(" (");
+			query.append(DBConstantes.T_ITINERAIRES_STOP_AREA_FROM);
+			query.append(",");
+			query.append(DBConstantes.T_ITINERAIRES_ITINERAIRE);
+			query.append(") values (?,?)");
+
+			Connection conn = null;
+			PreparedStatement pstmt = null;
+			ResultSet res = null;
+
+			try {
+				conn = DatabaseConnection.getConnection();
+				pstmt = conn.prepareStatement(query.toString());
+				pstmt.setInt (1, id_stop_area_from);
+				pstmt.setString(2, builder.toString());
+				pstmt.execute();
+
+			} catch (SQLException e) {
+				throw new HerculeTechnicalException("Erreur insertStopPoint, " + e.getMessage());
+			} finally {
+				close(null, pstmt, res);
+			}
+		}
+		
 	}
 
 	/**

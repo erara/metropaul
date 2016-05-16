@@ -16,6 +16,7 @@ public class DBConstantes {
 	public static String T_STOP_AREA_LINE = "T_STOP_AREA_LINE";
 	public static String T_STOP_AREA_ROUTE = "T_STOP_AREA_ROUTE";
 	public static String T_STOP_POINT = "T_STOP_POINT";
+	public static String T_ITINERAIRES = "T_ITINERAIRES";
 	
 	/** colonne identiques à toutes les tables */
 	public static String T_ID = "id";
@@ -76,5 +77,8 @@ public class DBConstantes {
 	public static String T_STOP_POINT_LONGITUDE = "longitude";
 	public static String T_STOP_POINT_LATITUDE = "latitude";
 	
-	
+	/** T_ITINERAIRES colonnes */
+	public static String T_ITINERAIRES_STOP_AREA_FROM = "id_stop_area_from";
+	public static String T_ITINERAIRES_STOP_AREA_TO = "id_stop_area_to";
+	public static String T_ITINERAIRES_ITINERAIRE = "itineraire";
 }

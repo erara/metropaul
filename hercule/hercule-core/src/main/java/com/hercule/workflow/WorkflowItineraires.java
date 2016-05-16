@@ -93,11 +93,8 @@ public class WorkflowItineraires implements IWorkflow{
 			}
 
 			for(StopAreaModel stopAreaModel : listFrom) {
-				List<StopAreaModel> listTo = new ArrayList<StopAreaModel>();
-				listTo.addAll(listFrom);
-				listTo.remove(stopAreaModel);
 				
-				JourneyRunnable journeyRunnable = new JourneyRunnable(stopAreaModel.getName(), stopAreaModel, listTo);
+				JourneyRunnable journeyRunnable = new JourneyRunnable(stopAreaModel.getName(), stopAreaModel, listFrom);
 				boolean isThreadRunning = false;
 
 				do {
