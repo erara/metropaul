@@ -152,23 +152,25 @@ public class JourneyRunnable implements Runnable{
 								}
 							}
 						}
+						String replaceString = itineraireOutput.toString();
+						replaceString.replaceAll("street_network", "s_n");
+						replaceString.replaceAll("public_transport", "p_t");
+						replaceString.replaceAll("transfer", "t_r");
+						replaceString.replaceAll("waiting", "w_t");
+						itineraires.add(replaceString);	
 					}
 
-					String replaceString = itineraireOutput.toString();
-					replaceString.replaceAll("street_network", "s_n");
-					replaceString.replaceAll("public_transport", "p_t");
-					replaceString.replaceAll("transfer", "t_r");
-					replaceString.replaceAll("waiting", "w_t");
 					
-					itineraires.add(replaceString);
+					
 
 				}
-				//				fichier.close();
-				logger.info("insert itineraires pour " + stopAreaModelFrom.getIdStopArea() + " avec taille " + itineraires.size());
-				HerculeDao.insertItineraires(stopAreaModelFrom.getIdStopArea(), itineraires);
-				logger.info("flag de " + stopAreaModelFrom.getIdStopArea());
-				HerculeDao.flagToCalculated(stopAreaModelFrom.getIdStopArea());
 			}
+
+			//				fichier.close();
+			logger.info("insert itineraires pour " + stopAreaModelFrom.getIdStopArea() + " avec taille " + itineraires.size());
+			HerculeDao.insertItineraires(stopAreaModelFrom.getIdStopArea(), itineraires);
+			logger.info("flag de " + stopAreaModelFrom.getIdStopArea());
+			HerculeDao.flagToCalculated(stopAreaModelFrom.getIdStopArea());
 
 		} catch (IOException e) {
 			logger.error("Impossible de créer le fichierD:/logs/" + stopAreaModelFrom.getName() + ".csv");
