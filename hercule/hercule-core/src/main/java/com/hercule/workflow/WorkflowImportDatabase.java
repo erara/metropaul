@@ -142,12 +142,13 @@ public class WorkflowImportDatabase implements IWorkflow {
 										HerculeDao.insertStopAreaRoute(idStopArea, idRoute);
 
 										/** Appel WS pour récupération des StopPoints */
-										tmpStopPoints = RestManager.callNavitiaStopPoints(restTemplate, stopArea.getId());
+										//tmpStopPoints = RestManager.callNavitiaStopPoints(restTemplate, stopArea.getId());
 
-										for (StopPoint stopPoint : tmpStopPoints.getStop_points()){
+										/*for (StopPoint stopPoint : tmpStopPoints.getStop_points()){
 											/** Insertion d'un StopPoint en BDD */
-											HerculeDao.insertStopPoint(stopPoint, idStopArea, idRoute);
-										}
+									//		HerculeDao.insertStopPoint(stopPoint, idStopArea, idRoute);
+										//}
+									
 									}
 									
 									pageStopAreas++;

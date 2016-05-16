@@ -34,11 +34,11 @@ public class JourneyRunnable implements Runnable{
 	private StopAreaModel stopAreaModelFrom;
 	private List<StopAreaModel> listStations;
 	private static String PUBLIC_TRANSPORT = "public_transport";
-	private static String DATE_JOURNEY = "20160515T121128";
-	private static String DATE_PREMIER_DEPART_SEMAINE = "20160515T050000";
-	private static String DATE_DERNIER_DEPART_SEMAINE = "20160515T015000";
-	private static String DATE_PREMIER_DEPART_WE = "20160515T050000";
-	private static String DATE_DERNIER_DEPART_WE = "20160515T015000";
+	private static String DATE_JOURNEY = "20160517T121128";
+	private static String DATE_PREMIER_DEPART_SEMAINE = "20160517T050000";
+	private static String DATE_DERNIER_DEPART_SEMAINE = "20160517T015000";
+	private static String DATE_PREMIER_DEPART_WE = "20160521T050000";
+	private static String DATE_DERNIER_DEPART_WE = "20160521T015000";
 	
 	private static Map<String, String> mapType = new HashMap<String, String>();
 
@@ -60,7 +60,7 @@ public class JourneyRunnable implements Runnable{
 
 		try {
 
-			List<StringBuilder> itineraires = new ArrayList<StringBuilder>();
+			List<String> itineraires = new ArrayList<String>();
 
 			RestTemplate restTemplate = RestManager.createRestTemplate();
 
@@ -100,9 +100,9 @@ public class JourneyRunnable implements Runnable{
 									String fromID = section.getFrom().getStop_point().getStop_area().getId();
 
 									Departures departures_Semaine = RestManager.callPremierDepart(restTemplate, routeID, fromID , DATE_PREMIER_DEPART_SEMAINE);
-									//									Departures departures_WE = RestManager.callPremierDepart(restTemplate, routeID, fromID, DATE_PREMIER_DEPART_WE);
+									Departures departures_WE = RestManager.callPremierDepart(restTemplate, routeID, fromID, DATE_PREMIER_DEPART_WE);
 									Arrivals arrivals_Semaine = RestManager.callDernierDepart(restTemplate, routeID, fromID, DATE_DERNIER_DEPART_SEMAINE);
-									//									Arrivals arrivals_WE = RestManager.callDernierDepart(restTemplate, routeID, fromID, DATE_DERNIER_DEPART_WE);
+									Arrivals arrivals_WE = RestManager.callDernierDepart(restTemplate, routeID, fromID, DATE_DERNIER_DEPART_WE);
 
 									//Si il y a une horaire disponible alors l'insérer, sinon ne rien faire
 									if (departures_Semaine.getDepartures().size()>0){
@@ -110,21 +110,21 @@ public class JourneyRunnable implements Runnable{
 									} else { // C'est possible qu'il y ait des travaux et donc pas d'horaire, donc ne rien prendre
 										itineraireOutput.append("#");
 									}
-									//									if (departures_WE.getDepartures().size()>0){
-									//										itineraireOutput.append(departures_WE.getDepartures().get(0).getStop_date_time().getDeparture_date_time().substring(9,13) + "#");
-									//									} else { // C'est possible qu'il y ait des travaux et donc pas d'horaire, donc ne rien prendre
-									//										itineraireOutput.append("#");
-									//									}
+									if (departures_WE.getDepartures().size()>0){
+										itineraireOutput.append(departures_WE.getDepartures().get(0).getStop_date_time().getDeparture_date_time().substring(9,13) + "#");
+									} else { // C'est possible qu'il y ait des travaux et donc pas d'horaire, donc ne rien prendre
+										itineraireOutput.append("#");
+									}
 									if (arrivals_Semaine.getArrivals().size()>0){
 										itineraireOutput.append(arrivals_Semaine.getArrivals().get(0).getStop_date_time().getDeparture_date_time().substring(9,13) + "#");
 									} else { // C'est possible qu'il y ait des travaux et donc pas d'horaire, donc ne rien prendre
 										itineraireOutput.append("#");
 									}
-									//									if (arrivals_WE.getArrivals().size()>0){
-									//										itineraireOutput.append(arrivals_WE.getArrivals().get(0).getStop_date_time().getDeparture_date_time().substring(9,13) + "#");
-									//									} else { // C'est possible qu'il y ait des travaux et donc pas d'horaire, donc ne rien prendre
-									//										itineraireOutput.append("#");
-									//									}
+									if (arrivals_WE.getArrivals().size()>0){
+										itineraireOutput.append(arrivals_WE.getArrivals().get(0).getStop_date_time().getDeparture_date_time().substring(9,13) + "#");
+									} else { // C'est possible qu'il y ait des travaux et donc pas d'horaire, donc ne rien prendre
+										itineraireOutput.append("#");
+									}
 								} else {
 									//Pas de premier/dernier départ sur un itinéraire à pied
 									itineraireOutput.append("####");
@@ -153,7 +153,14 @@ public class JourneyRunnable implements Runnable{
 							}
 						}
 					}
-					itineraires.add(itineraireOutput);
+
+					String replaceString = itineraireOutput.toString();
+					replaceString.replaceAll("street_network", "s_n");
+					replaceString.replaceAll("public_transport", "p_t");
+					replaceString.replaceAll("transfer", "t_r");
+					replaceString.replaceAll("waiting", "w_t");
+					
+					itineraires.add(replaceString);
 
 				}
 				//				fichier.close();

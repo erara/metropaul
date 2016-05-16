@@ -526,9 +526,9 @@ public class HerculeDao {
 		}
 	}
 	
-	public synchronized static void insertItineraires(int id_stop_area_from, List<StringBuilder> itineraires) throws HerculeTechnicalException {
+	public synchronized static void insertItineraires(int id_stop_area_from, List<String> itineraires) throws HerculeTechnicalException {
 
-		for(StringBuilder builder : itineraires) {
+		for(String builder : itineraires) {
 //			logger.info("insertItineraire " + id_stop_area_from);
 
 			StringBuilder query = new StringBuilder("insert into ");
