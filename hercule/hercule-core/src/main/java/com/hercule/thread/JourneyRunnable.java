@@ -62,8 +62,6 @@ public class JourneyRunnable implements Runnable{
 
 			List<StringBuilder> itineraires = new ArrayList<StringBuilder>();
 
-			//			logger.info("Création du fichier d'export D:/logs/" + stopAreaModelFrom.getName() + ".csv");
-			//			BufferedWriter fichier = new BufferedWriter(new FileWriter("D:/logs/itineraires/" + stopAreaModelFrom.getName().replaceAll("/", " ") + ".csv", false));
 			RestTemplate restTemplate = RestManager.createRestTemplate();
 
 			JourneyFactory journeyFactory = new JourneyFactory();
@@ -156,8 +154,7 @@ public class JourneyRunnable implements Runnable{
 						}
 					}
 					itineraires.add(itineraireOutput);
-					//					fichier.write(itineraireOutput.toString());
-					//					fichier.newLine();
+
 				}
 				//				fichier.close();
 				logger.info("insert itineraires pour " + stopAreaModelFrom.getIdStopArea() + " avec taille " + itineraires.size());

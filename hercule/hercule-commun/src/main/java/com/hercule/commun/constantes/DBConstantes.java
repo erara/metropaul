@@ -79,6 +79,5 @@ public class DBConstantes {
 	
 	/** T_ITINERAIRES colonnes */
 	public static String T_ITINERAIRES_STOP_AREA_FROM = "id_stop_area_from";
-	public static String T_ITINERAIRES_STOP_AREA_TO = "id_stop_area_to";
 	public static String T_ITINERAIRES_ITINERAIRE = "itineraire";
 }

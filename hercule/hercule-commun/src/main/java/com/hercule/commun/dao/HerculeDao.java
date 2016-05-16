@@ -1,5 +1,8 @@
 package com.hercule.commun.dao;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -34,6 +37,43 @@ public class HerculeDao {
 
 	/** Private Logger logger */
 	private static final Logger logger = Logger.getLogger(HerculeDao.class.getName());
+	
+	
+	public static void getItineraires() throws HerculeTechnicalException {
+
+		
+		StringBuilder query = new StringBuilder("select " + DBConstantes.T_ITINERAIRES_STOP_AREA_FROM + ", " + DBConstantes.T_ITINERAIRES_ITINERAIRE + " from ");
+		query.append(DBConstantes.T_ITINERAIRES);
+		query.append(" order by id_stop_area_from");
+
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet res = null;
+
+		try {
+
+			conn = DatabaseConnection.getConnection();
+			pstmt = conn.prepareStatement(query.toString());
+			res = pstmt.executeQuery();
+
+			if(res != null) {
+				BufferedWriter fichier = new BufferedWriter(new FileWriter("D:/logs/itineraires/itineraires.csv", false));
+				while (res.next()) {
+					fichier.write(res.getString(DBConstantes.T_ITINERAIRES_ITINERAIRE));
+					fichier.newLine();
+				}
+				fichier.close();
+
+			}
+
+		} catch (SQLException e) {
+			throw new HerculeTechnicalException("Erreur getItineraires - sql exception, " + e.getMessage());
+		} catch (IOException e) {
+			throw new HerculeTechnicalException("Erreur getItineraires - création du fichier, " + e.getMessage());
+		} finally {
+			close(null, pstmt, res);
+		}
+	}
 	
 	
 	public static Map<String, String> getAuthorizedNetworks() throws HerculeTechnicalException {
