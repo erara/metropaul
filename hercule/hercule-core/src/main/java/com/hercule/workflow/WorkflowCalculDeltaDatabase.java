@@ -3,7 +3,11 @@ package com.hercule.workflow;
 import org.apache.log4j.Logger;
 
 import com.hercule.commun.interfaces.IWorkflow;
-
+/**
+ * 
+ * @author Antoine
+ *
+ */
 public class WorkflowCalculDeltaDatabase implements IWorkflow {
 
 	/** Private Logger logger */
