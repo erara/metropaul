@@ -39,6 +39,40 @@ public class HerculeDao {
 	private static final Logger logger = Logger.getLogger(HerculeDao.class.getName());
 	
 	
+	public static void getStopAreaIdAndName() throws HerculeTechnicalException{
+
+		StringBuilder query = new StringBuilder("select " + DBConstantes.T_STOP_AREA_NAME + ", " + DBConstantes.T_STOP_AREA_ID + " from ");
+		query.append(DBConstantes.T_STOP_AREA);
+
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet res = null;
+
+		try {
+
+			conn = DatabaseConnection.getConnection();
+			pstmt = conn.prepareStatement(query.toString());
+			res = pstmt.executeQuery();
+
+			if(res != null) {
+				BufferedWriter fichier = new BufferedWriter(new FileWriter("D:/logs/itineraires/stations.csv", false));
+				while (res.next()) {
+					fichier.write(res.getString(DBConstantes.T_STOP_AREA_NAME) + ";" + res.getString(DBConstantes.T_STOP_AREA_ID));
+					fichier.newLine();
+				}
+				fichier.close();
+
+			}
+
+		} catch (SQLException e) {
+			throw new HerculeTechnicalException("Erreur getItineraires - sql exception, " + e.getMessage());
+		} catch (IOException e) {
+			throw new HerculeTechnicalException("Erreur getItineraires - création du fichier, " + e.getMessage());
+		} finally {
+			close(null, pstmt, res);
+		}
+	}
+	
 	public static void getItineraires() throws HerculeTechnicalException {
 
 		

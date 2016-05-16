@@ -58,6 +58,7 @@ public class WorkflowExportDatabase implements IWorkflow {
 			propertiesFilename = fileName;
 			DatabaseConnection.initConnection(propertiesFilename);
 			exportItineraires();
+			exportStopArea();
 			DatabaseConnection.closeConnection();
 		} catch (HerculeTechnicalException e) {
 			logger.error(e.getMessage());
@@ -73,8 +74,15 @@ public class WorkflowExportDatabase implements IWorkflow {
 		try {
 			HerculeDao.getItineraires();
 		} catch (HerculeTechnicalException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e.getMessage());
+		}
+	}
+	
+	private void exportStopArea() {
+		try {
+			HerculeDao.getStopAreaIdAndName();
+		} catch (HerculeTechnicalException e) {
+			logger.error(e.getMessage());
 		}
 	}
 	
