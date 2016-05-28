@@ -49,21 +49,20 @@ public class JourneyRunnable implements Runnable{
 		mapType.put("waiting", "wt");
 	}
 
-	public JourneyRunnable(String threadName, StopAreaModel stopAreaModelFrom, List<StopAreaModel> listStations) {
+	public JourneyRunnable(String threadName, StopAreaModel stopAreaModelFrom) {
 		this.threadName = threadName;
 		this.stopAreaModelFrom = stopAreaModelFrom;
-		this.listStations = listStations;
 	}
 
 	public void run() {
 		logger.info("Running " +  threadName );
 
 		try {
+			
+			listStations = HerculeDao.getAllStopAreaNoFlag();
 
 			List<String> itineraires = new ArrayList<String>();
-
 			RestTemplate restTemplate = RestManager.createRestTemplate();
-
 			JourneyFactory journeyFactory = new JourneyFactory();
 
 			for(StopAreaModel stopAreaModelTo : listStations) {
@@ -74,10 +73,6 @@ public class JourneyRunnable implements Runnable{
 					StringBuilder itineraireOutput = new StringBuilder();
 					itineraireOutput.append(stopAreaModelFrom.getIdStopArea() + ";");
 					itineraireOutput.append(stopAreaModelTo.getIdStopArea() + ";");
-					//					itineraireOutput.append("PREMIER_DEPART_S" + ";");
-					//					itineraireOutput.append("DERNIER_DEPART_S" + ";");
-					//					itineraireOutput.append("PREMIER_DEPART_WD" + ";");
-					//					itineraireOutput.append("DERNIER_DEPART_WS" + ";");
 
 
 					Journeys journeys = RestManager.callJourney(restTemplate, stopAreaModelFrom, stopAreaModelTo, "1", DATE_JOURNEY);
