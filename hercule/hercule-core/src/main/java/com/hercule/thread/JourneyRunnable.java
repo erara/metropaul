@@ -34,11 +34,11 @@ public class JourneyRunnable implements Runnable{
 	private StopAreaModel stopAreaModelFrom;
 	private List<StopAreaModel> listStations;
 	private static String PUBLIC_TRANSPORT = "public_transport";
-	private static String DATE_JOURNEY = "20160523T121128";
-	private static String DATE_PREMIER_DEPART_SEMAINE = "20160523T050000";
-	private static String DATE_DERNIER_DEPART_SEMAINE = "20160523T015000";
-	private static String DATE_PREMIER_DEPART_WE = "20160522T050000";
-	private static String DATE_DERNIER_DEPART_WE = "20160522T015000";
+	private static String DATE_JOURNEY = "20160611T121128";
+	private static String DATE_PREMIER_DEPART_SEMAINE = "20160613T050000";
+	private static String DATE_DERNIER_DEPART_SEMAINE = "20160613T015000";
+	private static String DATE_PREMIER_DEPART_WE = "20160611T050000";
+	private static String DATE_DERNIER_DEPART_WE = "20160611T015000";
 
 	private static Map<String, String> mapType = new HashMap<String, String>();
 
@@ -152,11 +152,8 @@ public class JourneyRunnable implements Runnable{
 								}
 							}
 							String replaceString = itineraireOutput.toString();
-							replaceString.replaceAll("street_network", "s_n");
-							replaceString.replaceAll("public_transport", "p_t");
-							replaceString.replaceAll("transfer", "t_r");
-							replaceString.replaceAll("waiting", "w_t");
-							itineraires.add(replaceString);	
+							String purge = replaceString.replaceAll("street_network", "s_n").replaceAll("public_transport", "p_t").replaceAll("transfer", "t_r").replaceAll("waiting", "w_t");
+							itineraires.add(purge);	
 						}
 					}
 				}
