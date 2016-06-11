@@ -64,7 +64,7 @@ public class RestManager {
 	 * @param password
 	 * @return
 	 */
-	public synchronized static RestTemplate createRestTemplate() {
+	public static RestTemplate createRestTemplate() {
 
         UsernamePasswordCredentials cred = new UsernamePasswordCredentials(userNavitia, passwordNavitia);
         BasicCredentialsProvider cp = new BasicCredentialsProvider();
@@ -172,7 +172,7 @@ public class RestManager {
 	}
 	
 	
-	public synchronized static Journeys callJourney(RestTemplate restTemplate, StopAreaModel from, StopAreaModel to, String countJourney, String dateTime) throws MalformedURLException, URISyntaxException {
+	public static Journeys callJourney(RestTemplate restTemplate, StopAreaModel from, StopAreaModel to, String countJourney, String dateTime) throws MalformedURLException, URISyntaxException {
 		StringBuilder url_Journey = new StringBuilder();
 		url_Journey.append(urlWSNavitia + "/journeys?");
 		url_Journey.append("from=" + from.getLongitude() + "%3B" + from.getLatitude());
@@ -201,7 +201,7 @@ public class RestManager {
 	}
 		
 	
-	public synchronized static Departures callPremierDepart(RestTemplate restTemplate, String route, String stopArea, String opening_hour) throws MalformedURLException, URISyntaxException {
+	public static Departures callPremierDepart(RestTemplate restTemplate, String route, String stopArea, String opening_hour) throws MalformedURLException, URISyntaxException {
 		StringBuilder url_PremierDepart = new StringBuilder();
 		url_PremierDepart.append(urlWSNavitia + "/");
 		url_PremierDepart.append("routes/" + route);
@@ -220,7 +220,7 @@ public class RestManager {
 		return restTemplate.getForObject(url_uri_navitia_premierDepart, Departures.class);
 	}
 	
-	public synchronized static Arrivals callDernierDepart(RestTemplate restTemplate, String route, String stopArea, String closing_hour) throws MalformedURLException, URISyntaxException {
+	public static Arrivals callDernierDepart(RestTemplate restTemplate, String route, String stopArea, String closing_hour) throws MalformedURLException, URISyntaxException {
 		StringBuilder url_Dernierdepart = new StringBuilder();
 		url_Dernierdepart.append(urlWSNavitia + "/");
 		url_Dernierdepart.append("routes/" + route);

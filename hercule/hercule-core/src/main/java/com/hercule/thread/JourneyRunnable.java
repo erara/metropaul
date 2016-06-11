@@ -155,7 +155,6 @@ public class JourneyRunnable implements Runnable{
 						}
 					}
 				}
-				break;
 			}
 
 			//				fichier.close();
