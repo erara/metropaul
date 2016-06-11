@@ -992,7 +992,7 @@ public class HerculeDao {
 	}
 	
 	
-	public synchronized static int getStopAreaFromTSTOPPOINT(String idStopPoint) throws HerculeTechnicalException {
+	public static int getStopAreaFromTSTOPPOINT(String idStopPoint) throws HerculeTechnicalException {
 		StringBuilder query = new StringBuilder("select id_stop_area from ");
 		query.append(DBConstantes.T_STOP_POINT);
 		query.append(" where id_stop_point_navitia = '" + idStopPoint + "'");
