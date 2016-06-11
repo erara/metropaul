@@ -1,7 +1,5 @@
 package com.hercule.thread;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -34,11 +32,11 @@ public class JourneyRunnable implements Runnable{
 	private StopAreaModel stopAreaModelFrom;
 	private List<StopAreaModel> listStations;
 	private static String PUBLIC_TRANSPORT = "public_transport";
-	private static String DATE_JOURNEY = "20160611T121128";
+	private static String DATE_JOURNEY = "20160613T121128";
 	private static String DATE_PREMIER_DEPART_SEMAINE = "20160613T050000";
 	private static String DATE_DERNIER_DEPART_SEMAINE = "20160613T015000";
-	private static String DATE_PREMIER_DEPART_WE = "20160611T050000";
-	private static String DATE_DERNIER_DEPART_WE = "20160611T015000";
+	private static String DATE_PREMIER_DEPART_WE = "20160618T050000";
+	private static String DATE_DERNIER_DEPART_WE = "20160618T015000";
 
 	private static Map<String, String> mapType = new HashMap<String, String>();
 
@@ -71,7 +69,7 @@ public class JourneyRunnable implements Runnable{
 					logger.info("calcul itinéraire de " + stopAreaModelFrom.getName() + " vers " + stopAreaModelTo.getName());
 
 					StringBuilder itineraireOutput = new StringBuilder();
-					itineraireOutput.append(stopAreaModelFrom.getIdStopArea() + ";");
+					//itineraireOutput.append(stopAreaModelFrom.getIdStopArea() + ";");
 					itineraireOutput.append(stopAreaModelTo.getIdStopArea() + ";");
 
 
@@ -157,6 +155,7 @@ public class JourneyRunnable implements Runnable{
 						}
 					}
 				}
+				break;
 			}
 
 			//				fichier.close();

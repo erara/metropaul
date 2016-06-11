@@ -108,15 +108,16 @@ CREATE TABLE T_STOP_POINT (
 
 CREATE TABLE T_ITINERAIRES (
 	id_stop_area_from INT NOT NULL,
+	id_stop_area_to INT NOT NULL,
 	itineraire VARCHAR(500)
 );
 
 
 insert into T_AUTH_NETWORKS values ('METRO', 'network:OIF:439');
-insert into T_AUTH_NETWORKS values ('Noctilien', 'network:OIF:56');
-insert into T_AUTH_NETWORKS values ('RATP', 'network:RTP');
-insert into T_AUTH_NETWORKS values ('RER', 'network:RER');
-insert into T_AUTH_NETWORKS values ('SNCF', 'network:sncf');
-insert into T_AUTH_NETWORKS values ('TER', 'network:TER');
-insert into T_AUTH_NETWORKS values ('TRAMWAY', 'network:OIF:440');
-insert into T_AUTH_NETWORKS values ('Transilien', 'network:TN');	
+--insert into T_AUTH_NETWORKS values ('Noctilien', 'network:OIF:56');
+--insert into T_AUTH_NETWORKS values ('RATP', 'network:RTP');
+--insert into T_AUTH_NETWORKS values ('RER', 'network:RER');
+--insert into T_AUTH_NETWORKS values ('SNCF', 'network:sncf');
+--insert into T_AUTH_NETWORKS values ('TER', 'network:TER');
+--insert into T_AUTH_NETWORKS values ('TRAMWAY', 'network:OIF:440');
+--insert into T_AUTH_NETWORKS values ('Transilien', 'network:TN');	

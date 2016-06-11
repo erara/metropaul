@@ -1,7 +1,6 @@
 package com.hercule.workflow;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
@@ -28,7 +27,7 @@ public class WorkflowItineraires implements IWorkflow{
 	private static final Logger logger = Logger.getLogger(WorkflowItineraires.class.getName());
 	private static String propertiesFilename;
 	private ThreadPoolExecutor threadPool = null;
-	private static int CORE_POOL_SIZE = 1;
+	private static int CORE_POOL_SIZE = 10;
 	
 	public WorkflowItineraires() {
 

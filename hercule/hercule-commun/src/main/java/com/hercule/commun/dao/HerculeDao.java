@@ -564,14 +564,18 @@ public class HerculeDao {
 
 		for(String builder : itineraires) {
 //			logger.info("insertItineraire " + id_stop_area_from);
+			
+			String[] split = builder.split(";");
 
 			StringBuilder query = new StringBuilder("insert into ");
 			query.append(DBConstantes.T_ITINERAIRES);
 			query.append(" (");
 			query.append(DBConstantes.T_ITINERAIRES_STOP_AREA_FROM);
 			query.append(",");
+			query.append(DBConstantes.T_ITINERAIRES_STOP_AREA_TO);
+			query.append(",");
 			query.append(DBConstantes.T_ITINERAIRES_ITINERAIRE);
-			query.append(") values (?,?)");
+			query.append(") values (?,?,?)");
 
 			Connection conn = null;
 			PreparedStatement pstmt = null;
@@ -581,7 +585,8 @@ public class HerculeDao {
 				conn = DatabaseConnection.getConnection();
 				pstmt = conn.prepareStatement(query.toString());
 				pstmt.setInt (1, id_stop_area_from);
-				pstmt.setString(2, builder.toString());
+				pstmt.setInt(2, Integer.parseInt(split[0]));
+				pstmt.setString(3, split[1]);
 				pstmt.execute();
 
 			} catch (SQLException e) {
