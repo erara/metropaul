@@ -80,7 +80,7 @@ if [ "$1" = "import" ]||[ "$1" = "export" ]||[ "$1" = "itineraires" ]; then
 	java -Xmx256m -Xms64m -Dfile.encoding=UTF-8 -DHERCULE_DATA=$HERCULE_DATA -classpath $CLASSPATH com.hercule.workflow.Workflow $*
 else
 	DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-	MY_DUMP = cat ${DIR}/../config/hercule.properties | grep ^DUMP_TABLES | awk -F= '{print $2}'
-	mysqldump -u $2 --password=$3 hercule ${MY_DUMP} > dump_metropaul_bdd.sql
-	
+	DUMP_TABLES=`cat ${DIR}/../config/hercule.properties | grep ^DUMP_TABLES | awk -F= '{print $2}'`
+	DUMP_DATE=`date +%Y%m%d%H%M%S`
+	mysqldump -u $2 --password=$3 hercule ${MY_DUMP} > ${HOME}/data/dump/${DUMP_DATE}_dump_metropaul_bdd.sql
 fi
