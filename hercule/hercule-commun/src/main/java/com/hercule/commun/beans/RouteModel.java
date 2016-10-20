@@ -2,6 +2,9 @@ package com.hercule.commun.beans;
 
 import java.util.Date;
 
+import javax.json.Json;
+import javax.json.JsonObjectBuilder;
+
 public class RouteModel {
 	private int idRoute;
 	private int idLine;
@@ -97,5 +100,14 @@ public class RouteModel {
 	public void setLastUpdate(Date lastUpdate) {
 		this.lastUpdate = lastUpdate;
 	}
+
+    public String transformToJson() {
+    	JsonObjectBuilder jsonBuilder = Json.createObjectBuilder()
+    			.add("idRoute", this.idRoute)
+    			.add("idLine", this.idLine)
+    			.add("name", this.name)
+    			.add("destination", this.destination);
+    	return jsonBuilder.build().toString();
+    }
     
 }

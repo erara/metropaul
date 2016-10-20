@@ -1,11 +1,19 @@
 package com.hercule.thread;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.StringWriter;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.json.Json;
+import javax.json.JsonArrayBuilder;
+import javax.json.JsonObjectBuilder;
+import javax.json.JsonWriter;
 
 import org.apache.log4j.Logger;
 import org.springframework.web.client.RestTemplate;
@@ -32,11 +40,12 @@ public class JourneyRunnable implements Runnable{
 	private StopAreaModel stopAreaModelFrom;
 	private List<StopAreaModel> listStations;
 	private static String PUBLIC_TRANSPORT = "public_transport";
-	private static String DATE_JOURNEY = "20160613T121128";
-	private static String DATE_PREMIER_DEPART_SEMAINE = "20160613T050000";
-	private static String DATE_DERNIER_DEPART_SEMAINE = "20160613T015000";
-	private static String DATE_PREMIER_DEPART_WE = "20160618T050000";
-	private static String DATE_DERNIER_DEPART_WE = "20160618T015000";
+	private String DATE_JOURNEY;
+	private String DATE_PREMIER_DEPART_SEMAINE;
+	private String DATE_DERNIER_DEPART_SEMAINE;
+	private String DATE_PREMIER_DEPART_WE;
+	private String DATE_DERNIER_DEPART_WE;
+	private String outputDirectory;
 
 	private static Map<String, String> mapType = new HashMap<String, String>();
 
@@ -47,9 +56,15 @@ public class JourneyRunnable implements Runnable{
 		mapType.put("waiting", "wt");
 	}
 
-	public JourneyRunnable(String threadName, StopAreaModel stopAreaModelFrom) {
+	public JourneyRunnable(String outputDirectory, String threadName, StopAreaModel stopAreaModelFrom, String datetime, String datePremierDepartSemaine, String dateDernierDepartSemaine, String datePremierDepartWE, String dateDernierDepartWE) {
+		this.outputDirectory = outputDirectory;
 		this.threadName = threadName;
 		this.stopAreaModelFrom = stopAreaModelFrom;
+		this.DATE_JOURNEY = datetime;
+		this.DATE_PREMIER_DEPART_SEMAINE = datePremierDepartSemaine;
+		this.DATE_DERNIER_DEPART_SEMAINE = dateDernierDepartSemaine;
+		this.DATE_PREMIER_DEPART_WE = datePremierDepartWE;
+		this.DATE_DERNIER_DEPART_WE = dateDernierDepartWE;
 	}
 
 	public void run() {
@@ -59,37 +74,41 @@ public class JourneyRunnable implements Runnable{
 			
 			listStations = HerculeDao.getAllStopAreaNoFlag();
 
-			List<String> itineraires = new ArrayList<String>();
 			RestTemplate restTemplate = RestManager.createRestTemplate();
 			JourneyFactory journeyFactory = new JourneyFactory();
 
+			BufferedWriter fichier = new BufferedWriter(new FileWriter(outputDirectory + "itineraires_" + stopAreaModelFrom.getName() + ".json"));
+			fichier.write("[");
+			boolean debut = true;
+			
 			for(StopAreaModel stopAreaModelTo : listStations) {
-
+				if(!debut) {
+					fichier.write(",");
+				}
+				
 				if(stopAreaModelFrom.getIdStopArea() != stopAreaModelTo.getIdStopArea()) {
 					logger.info("calcul itinéraire de " + stopAreaModelFrom.getName() + " vers " + stopAreaModelTo.getName());
 
-					StringBuilder itineraireOutput = new StringBuilder();
-					//itineraireOutput.append(stopAreaModelFrom.getIdStopArea() + ";");
-					itineraireOutput.append(stopAreaModelTo.getIdStopArea() + ";");
-
-
+					JsonObjectBuilder jsonBuilder = Json.createObjectBuilder();
 					Journeys journeys = RestManager.callJourney(restTemplate, stopAreaModelFrom, stopAreaModelTo, "1", DATE_JOURNEY);
-					//TODO : Si on veut afficher que pour la premiere station, l'intégrer
-					boolean isPremiereStation = true;
 
 					if (journeys == null || journeys.getJourneys() == null ){
 						logger.info("Pas d'itineraire trouvé de " + stopAreaModelFrom.getName() + " vers " + stopAreaModelTo.getName());
 					} else {
 
+
+						JsonArrayBuilder jsonArray = Json.createArrayBuilder();
+						
 						for(Journey myJourney : journeys.getJourneys()) {
 
 							if(myJourney.getSections() != null) {
-
+								
 								for(int i = 0; i < myJourney.getSections().size(); i++) {
 									Section section = myJourney.getSections().get(i);
-
-									itineraireOutput.append(section.getType() + "#");
-
+									
+									JsonObjectBuilder jsonBuilderSection = Json.createObjectBuilder();
+									
+									jsonBuilderSection.add("type", section.getType());
 
 									//PREMIER/DERNIER DEPART - SEMAINE - WE 
 									if (section.getType().equals(PUBLIC_TRANSPORT) /*& isPremiereStation*/){
@@ -103,63 +122,72 @@ public class JourneyRunnable implements Runnable{
 
 										//Si il y a une horaire disponible alors l'insérer, sinon ne rien faire
 										if (departures_Semaine.getDepartures().size()>0){
-											itineraireOutput.append(departures_Semaine.getDepartures().get(0).getStop_date_time().getDeparture_date_time().substring(9,13) + "#");
+											jsonBuilderSection.add("PDS", departures_Semaine.getDepartures().get(0).getStop_date_time().getDeparture_date_time().substring(9,13));
 										} else { // C'est possible qu'il y ait des travaux et donc pas d'horaire, donc ne rien prendre
-											itineraireOutput.append("#");
+											//itineraireOutput.append("#");
 										}
 										if (departures_WE.getDepartures().size()>0){
-											itineraireOutput.append(departures_WE.getDepartures().get(0).getStop_date_time().getDeparture_date_time().substring(9,13) + "#");
+											jsonBuilderSection.add("PDW", departures_WE.getDepartures().get(0).getStop_date_time().getDeparture_date_time().substring(9,13));
 										} else { // C'est possible qu'il y ait des travaux et donc pas d'horaire, donc ne rien prendre
-											itineraireOutput.append("#");
+											//itineraireOutput.append("#");
 										}
 										if (arrivals_Semaine.getArrivals().size()>0){
-											itineraireOutput.append(arrivals_Semaine.getArrivals().get(0).getStop_date_time().getDeparture_date_time().substring(9,13) + "#");
+											jsonBuilderSection.add("DDS", arrivals_Semaine.getArrivals().get(0).getStop_date_time().getDeparture_date_time().substring(9,13));
 										} else { // C'est possible qu'il y ait des travaux et donc pas d'horaire, donc ne rien prendre
-											itineraireOutput.append("#");
+											//itineraireOutput.append("#");
 										}
 										if (arrivals_WE.getArrivals().size()>0){
-											itineraireOutput.append(arrivals_WE.getArrivals().get(0).getStop_date_time().getDeparture_date_time().substring(9,13) + "#");
+											jsonBuilderSection.add("DDW", arrivals_WE.getArrivals().get(0).getStop_date_time().getDeparture_date_time().substring(9,13));
 										} else { // C'est possible qu'il y ait des travaux et donc pas d'horaire, donc ne rien prendre
-											itineraireOutput.append("#");
+											//itineraireOutput.append("#");
 										}
 									} else {
 										//Pas de premier/dernier départ sur un itinéraire à pied
-										itineraireOutput.append("####");
+										//itineraireOutput.append("####");
 									}
 
-									itineraireOutput.append(section.getDisplay_informations() != null ? section.getDisplay_informations().getCode() + "#" : "#" );
-									itineraireOutput.append(section.getDuration() + "#");
+									if(section.getDisplay_informations() != null && section.getDisplay_informations().getCode() != null && !"".equals(section.getDisplay_informations().getCode())) {
+										jsonBuilderSection.add("ligne", section.getDisplay_informations().getCode());
+									}
+									jsonBuilderSection.add("tps", section.getDuration());
 
 									if(section.getStop_date_times() != null) {
 
+										JsonArrayBuilder jsonArrayStops = Json.createArrayBuilder();
+										
 										for(int j = 0; j < section.getStop_date_times().size() ; j++) {
 											StopDateTime sdt = section.getStop_date_times().get(j);
+											String name = sdt.getStop_point().getName();
+											String lat = sdt.getStop_point().getCoord().getLat();
+											String lon = sdt.getStop_point().getCoord().getLon();
+											int idStopArea = HerculeDao.getStopAreaFromTSTOPPOINT(name, lat, lon);
 
-											int idStopArea = HerculeDao.getStopAreaFromTSTOPPOINT(sdt.getStop_point().getId());
-											itineraireOutput.append(idStopArea);
-
-											if(j != section.getStop_date_times().size() - 1) {
-												itineraireOutput.append("%");
-											}
+											jsonArrayStops.add(idStopArea);
 										}
+										jsonBuilderSection.add("stops", jsonArrayStops);
 									}
 
 									if(i != myJourney.getSections().size() - 1) {
-										itineraireOutput.append("|");
+										jsonArray.add(jsonBuilderSection);
 									}
 								}
 							}
-							String replaceString = itineraireOutput.toString();
-							String purge = replaceString.replaceAll("street_network", "s_n").replaceAll("public_transport", "p_t").replaceAll("transfer", "t_r").replaceAll("waiting", "w_t");
-							itineraires.add(purge);	
+							//String purge = replaceString.replaceAll("street_network", "s_n").replaceAll("public_transport", "p_t").replaceAll("transfer", "t_r").replaceAll("waiting", "w_t");
+
+							jsonBuilder
+								.add("depart", stopAreaModelFrom.getIdStopArea())
+								.add("arrivee", stopAreaModelTo.getIdStopArea())
+								.add("sections", jsonArray);
+							
+							logger.info(jsonBuilder.build().toString());
+							fichier.write(jsonBuilder.build().toString());
 						}
 					}
 				}
+				debut = false;
 			}
-
-			//				fichier.close();
-			logger.info("insert itineraires pour " + stopAreaModelFrom.getIdStopArea() + " avec taille " + itineraires.size());
-			HerculeDao.insertItineraires(stopAreaModelFrom.getIdStopArea(), itineraires);
+			fichier.write("]");
+			fichier.close();
 			logger.info("flag de " + stopAreaModelFrom.getIdStopArea());
 			HerculeDao.flagToCalculated(stopAreaModelFrom.getIdStopArea());
 

@@ -2,6 +2,9 @@ package com.hercule.commun.beans;
 
 import java.util.Date;
 
+import javax.json.Json;
+import javax.json.JsonObjectBuilder;
+
 public class StopAreaRoute {
 	private int idStopArea;
     private int idRoute;
@@ -52,6 +55,13 @@ public class StopAreaRoute {
 	public void setLastUpdate(Date lastUpdate) {
 		this.lastUpdate = lastUpdate;
 	}
+
+    public String transformToJson() {
+    	JsonObjectBuilder jsonBuilder = Json.createObjectBuilder()
+    			.add("idStopArea", this.idStopArea)
+    			.add("idRoute", this.idRoute);
+    	return jsonBuilder.build().toString();
+    }
     
     
 }

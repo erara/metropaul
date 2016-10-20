@@ -2,6 +2,9 @@ package com.hercule.commun.beans;
 
 import java.util.Date;
 
+import javax.json.Json;
+import javax.json.JsonObjectBuilder;
+
 public class NetworkModel {
 
 	private int idNetwork;
@@ -81,4 +84,11 @@ public class NetworkModel {
 	public void setLastUpdate(Date lastUpdate) {
 		this.lastUpdate = lastUpdate;
 	}
+    
+    public String transformToJson() {
+    	JsonObjectBuilder jsonBuilder = Json.createObjectBuilder()
+    			.add("idNetwork", this.idNetwork)
+    			.add("type", this.type);
+    	return jsonBuilder.build().toString();
+    }
 }

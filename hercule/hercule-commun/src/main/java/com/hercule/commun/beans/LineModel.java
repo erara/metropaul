@@ -2,6 +2,9 @@ package com.hercule.commun.beans;
 
 import java.util.Date;
 
+import javax.json.Json;
+import javax.json.JsonObjectBuilder;
+
 public class LineModel {
 	private int idLine;
 	private String code;
@@ -166,6 +169,18 @@ public class LineModel {
 	public void setTransport_type(String transport_type) {
 		this.transport_type = transport_type;
 	}
-	
+
+    public String transformToJson() {
+    	JsonObjectBuilder jsonBuilder = Json.createObjectBuilder()
+    			.add("idLine", this.idLine)
+    			.add("code", this.code)
+    			.add("name", this.name)
+    			.add("idNetwork", this.idNetwork)
+    			.add("openingTime", this.openingTime)
+    			.add("closingTime", this.closingTime)
+    			.add("color", this.color)
+    			.add("transport_type", this.transport_type);
+    	return jsonBuilder.build().toString();
+    }
 	
 }

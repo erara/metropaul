@@ -179,7 +179,7 @@ public class RestManager {
 		url_Journey.append(ADD_PARAM_URL);
 		url_Journey.append("to=" + to.getLongitude() + "%3B" + to.getLatitude());
 		url_Journey.append(ADD_PARAM_URL);
-		url_Journey.append("datetime=" + dateTime); // A MODIFIER A CHAQUE EXECUTION
+		url_Journey.append("datetime=" + dateTime);
 		url_Journey.append(ADD_PARAM_URL);
 		url_Journey.append("datetime_represents=arrival");
 		url_Journey.append(ADD_PARAM_URL);

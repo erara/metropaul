@@ -992,11 +992,14 @@ public class HerculeDao {
 	}
 	
 	
-	public static int getStopAreaFromTSTOPPOINT(String idStopPoint) throws HerculeTechnicalException {
+	public static int getStopAreaFromTSTOPPOINT(String name, String lat, String lon) throws HerculeTechnicalException {
 		StringBuilder query = new StringBuilder("select id_stop_area from ");
 		query.append(DBConstantes.T_STOP_POINT);
-		query.append(" where id_stop_point_navitia = '" + idStopPoint + "'");
-
+		query.append(" where name = \"" + name + "\"");
+		query.append(" and longitude = '" + lon + "'");
+		query.append(" and latitude = '" + lat + "'");
+		query.append(" LIMIT 1");
+		
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet res = null;
@@ -1061,8 +1064,44 @@ public class HerculeDao {
 	public static List<StopAreaModel> getAllStopAreas() throws HerculeTechnicalException {
 		StringBuilder query = new StringBuilder("select * from ");
 		query.append(DBConstantes.T_STOP_AREA);
-		query.append(" where calculated = 0");
 		query.append(" order by 1");
+
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet res = null;
+		List<StopAreaModel> listModel = null;
+
+		try {
+			conn = DatabaseConnection.getConnection();
+			pstmt = conn.prepareStatement(query.toString());
+			res = pstmt.executeQuery();
+			
+			while (res.next()) {
+				if(listModel == null) {
+					listModel = new ArrayList<StopAreaModel>();
+				}
+				
+				StopAreaModel model = new StopAreaModel();
+				model.setIdNavitia(res.getString(DBConstantes.T_STOP_AREA_ID_NAVITIA));
+				model.setIdStopArea(res.getInt(DBConstantes.T_STOP_AREA_ID));
+				model.setName(res.getString(DBConstantes.T_STOP_AREA_NAME));
+				model.setLongitude(res.getString(DBConstantes.T_STOP_AREA_LONGITUDE));
+				model.setLatitude(res.getString(DBConstantes.T_STOP_AREA_LATITUDE));
+				model.setLastUpdate(res.getDate(DBConstantes.T_LAST_UPDATE));
+				listModel.add(model);
+			}
+		} catch (SQLException e) {
+			throw new HerculeTechnicalException("Erreur getAllStopAreas, " + e.getMessage());
+		} finally {
+			close(null, pstmt, res);
+		}
+		return listModel;
+	}
+	
+	public static List<StopAreaModel> getAllStopAreasNotCalculated() throws HerculeTechnicalException {
+		StringBuilder query = new StringBuilder("select * from ");
+		query.append(DBConstantes.T_STOP_AREA);
+		query.append(" where calculated = 0");
 
 		Connection conn = null;
 		PreparedStatement pstmt = null;
