@@ -51,6 +51,7 @@ public class WorkflowExportDatabase implements IWorkflow {
 			exportStopAreaLine(outputDirectory + documentProperties.getProperty(FileConstantes.STOP_AREAS_LINE_FILE));
 			exportStopAreaRoute(outputDirectory + documentProperties.getProperty(FileConstantes.STOP_AREAS_ROUTE_FILE));
 			exportStopPoints(outputDirectory + documentProperties.getProperty(FileConstantes.STOP_POINTS_FILE));
+			exportItineraires(outputDirectory + documentProperties.getProperty(FileConstantes.ITINERAIRES_FILE));
 			DatabaseConnection.closeConnection();
 		} catch (HerculeTechnicalException e) {
 			logger.error(e.getMessage());
@@ -272,9 +273,9 @@ public class WorkflowExportDatabase implements IWorkflow {
 		}
 	}
 	
-	private void exportItineraires() {
+	private void exportItineraires(String file) {
 		try {
-			HerculeDao.getItineraires();
+			HerculeDao.getItineraires(file);
 		} catch (HerculeTechnicalException e) {
 			logger.error(e.getMessage());
 		}

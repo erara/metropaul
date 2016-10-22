@@ -39,7 +39,6 @@ public class WorkflowItineraires implements IWorkflow{
 	private static String dateDernierDepartSemaine;
 	private static String datePremierDepartWE;
 	private static String dateDernierDepartWE;
-	private static String outputDirectory;
 	
 	public WorkflowItineraires() {
 
@@ -59,7 +58,6 @@ public class WorkflowItineraires implements IWorkflow{
 			dateDernierDepartSemaine = documentProperties.getProperty(WSConstantes.DATE_DERNIER_DEPART_SEMAINE);
 			datePremierDepartWE = documentProperties.getProperty(WSConstantes.DATE_PREMIER_DEPART_WE);
 			dateDernierDepartWE = documentProperties.getProperty(WSConstantes.DATE_DERNIER_DEPART_WE);
-			outputDirectory = documentProperties.getProperty(FileConstantes.OUT_DIRECTORY);
 			calculItineraires();
 			DatabaseConnection.closeConnection();
 		} catch (HerculeTechnicalException e) {
@@ -116,7 +114,7 @@ public class WorkflowItineraires implements IWorkflow{
 			
 			for(StopAreaModel stopAreaModel : listFrom) {
 				
-				JourneyRunnable journeyRunnable = new JourneyRunnable(outputDirectory, stopAreaModel.getName(), stopAreaModel, datetime, datePremierDepartSemaine, dateDernierDepartSemaine, datePremierDepartWE, dateDernierDepartWE);
+				JourneyRunnable journeyRunnable = new JourneyRunnable(stopAreaModel.getName(), stopAreaModel, datetime, datePremierDepartSemaine, dateDernierDepartSemaine, datePremierDepartWE, dateDernierDepartWE);
 				logger.info("Thread pour la station " + stopAreaModel.getName());
 				executor.execute(journeyRunnable);
 				

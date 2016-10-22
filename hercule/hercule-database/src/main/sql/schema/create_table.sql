@@ -3,9 +3,6 @@ CREATE TABLE T_AUTH_NETWORKS(
 	id VARCHAR(50) NOT NULL
 );
 
-
--- type = 
--- generique_type = 
 CREATE TABLE T_NETWORK (
 	id_network INT NOT NULL AUTO_INCREMENT,
 	type VARCHAR(20),
@@ -17,7 +14,7 @@ CREATE TABLE T_NETWORK (
 CREATE TABLE T_LINE (
 	id_line INT NOT NULL AUTO_INCREMENT,
 	code VARCHAR(10),
-	name VARCHAR(200), -- Nom de la ligne
+	name VARCHAR(200),
 	id_network INT,
     opening_time VARCHAR(50),
 	closing_time VARCHAR(50),
@@ -27,13 +24,6 @@ CREATE TABLE T_LINE (
     PRIMARY KEY (id_line)
 );
 
--- Une route = une direction
--- Par exemple, RER A:
--- id_line = <id_line RER A> , destination = Marne la vallée
--- id_line = <id_line RER A> , destination = Boissy Saint Léger
--- id_line = <id_line RER A> , destination = Saint Germain en Laye
--- id_line = <id_line RER A> , destination = Poissy
--- id_line = <id_line RER A> , destination = Cergy
 CREATE TABLE T_ROUTE (
 	id_route INT NOT NULL AUTO_INCREMENT,
 	id_line INT,
@@ -45,39 +35,24 @@ CREATE TABLE T_ROUTE (
     PRIMARY KEY (id_route)
 );
 
-
--- 1 STOP_AREA = 1 STATION
 CREATE TABLE T_STOP_AREA (
 	id_stop_area INT NOT NULL AUTO_INCREMENT,
 	name VARCHAR(100),
     id_navitia VARCHAR(100),
     longitude VARCHAR(20),
     latitude VARCHAR(20),
+    zone INT,
+    ignore_itineraire INT,
     last_update DATE,
     calculated INT NOT NULL DEFAULT 0,
     PRIMARY KEY (id_stop_area)
 );
-
--- 1 STATION est associée à plusieurs lignes
--- id_stop_area = <id_stop_area Nation> , id_ligne = <id_ligne RER A>
--- id_stop_area = <id_stop_area Nation> , id_ligne = <id_ligne BUS 56>
--- id_stop_area = <id_stop_area Nation> , id_ligne = <id_ligne BUS 56>
--- id_stop_area = <id_stop_area Nation> , id_ligne = <id_ligne METRO 1>
--- id_stop_area = <id_stop_area Nation> , id_ligne = <id_ligne METRO 9>
 
 CREATE TABLE T_STOP_AREA_LINE (
     id_stop_area INT,
     id_line INT,
     last_update DATE
 );
-
-
--- 1 STATION est associée à plusieurs lignes
--- id_stop_area = <id_stop_area Nation> , id_ligne = <id_route RER A>
--- id_stop_area = <id_stop_area Nation> , id_ligne = <id_ligne BUS 56>
--- id_stop_area = <id_stop_area Nation> , id_ligne = <id_ligne BUS 56>
--- id_stop_area = <id_stop_area Nation> , id_ligne = <id_ligne METRO 1>
--- id_stop_area = <id_stop_area Nation> , id_ligne = <id_ligne METRO 9>
 
 CREATE TABLE T_STOP_AREA_ROUTE (
     id_stop_area INT,
@@ -88,7 +63,7 @@ CREATE TABLE T_STOP_AREA_ROUTE (
 CREATE TABLE T_STOP_POINT (
 	id_stop_point INT NOT NULL AUTO_INCREMENT,
 	id_stop_point_navitia VARCHAR(100),
-	name VARCHAR(300), -- Pour connaitre le nom de la sortie de metro pour diriger les gens
+	name VARCHAR(300),
     id_stop_area INT,
     id_route INT,
     longitude VARCHAR(30),

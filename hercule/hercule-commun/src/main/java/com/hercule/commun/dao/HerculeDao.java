@@ -73,12 +73,11 @@ public class HerculeDao {
 		}
 	}
 	
-	public static void getItineraires() throws HerculeTechnicalException {
+	public static void getItineraires(String file) throws HerculeTechnicalException {
 
 		
-		StringBuilder query = new StringBuilder("select " + DBConstantes.T_ITINERAIRES_STOP_AREA_FROM + ", " + DBConstantes.T_ITINERAIRES_ITINERAIRE + " from ");
+		StringBuilder query = new StringBuilder("select * from ");
 		query.append(DBConstantes.T_ITINERAIRES);
-		query.append(" order by id_stop_area_from");
 
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -91,11 +90,21 @@ public class HerculeDao {
 			res = pstmt.executeQuery();
 
 			if(res != null) {
-				BufferedWriter fichier = new BufferedWriter(new FileWriter("D:/logs/itineraires/itineraires.csv", false));
+				BufferedWriter fichier = new BufferedWriter(new FileWriter(file, false));
+				fichier.write("[");
+				boolean debut = true;
 				while (res.next()) {
-					fichier.write(res.getString(DBConstantes.T_ITINERAIRES_ITINERAIRE));
-					fichier.newLine();
+					if(!debut) {
+						fichier.write(",");
+					}
+					fichier.write("{");
+					fichier.write("\"id_stop_area_from\":" + res.getInt(DBConstantes.T_ITINERAIRES_STOP_AREA_FROM) + ",");
+					fichier.write("\"id_stop_area_to\":" + res.getInt(DBConstantes.T_ITINERAIRES_STOP_AREA_TO) + ",");
+					fichier.write("\"itineraire\":\"" + res.getString(DBConstantes.T_ITINERAIRES_ITINERAIRE) + "\"");
+					fichier.write("}");
+					debut = false;
 				}
+				fichier.write("]");
 				fichier.close();
 
 			}
@@ -380,8 +389,11 @@ public class HerculeDao {
 				close(null, pstmt, res);
 			}
 		} else {
-//			logger.warn("Le stopArea  " + stopArea.getName() + " existe déjà");
-
+			logger.warn("Le stopArea  " + stopArea.getName() + " existe déjà");
+			logger.warn(stopArea.getId());
+			logger.warn(stopArea.getCoord().getLat());
+			logger.warn(stopArea.getCoord().getLon());
+			
 			StringBuilder query = new StringBuilder("select id_stop_area from ");
 			query.append(DBConstantes.T_STOP_AREA);
 			query.append(" where name = ?");
@@ -1026,6 +1038,7 @@ public class HerculeDao {
 
 		StringBuilder query = new StringBuilder("select * from ");
 		query.append(DBConstantes.T_STOP_AREA);
+		query.append(" where ignore_itineraire=0");
 		query.append(" order by 1");
 
 		Connection conn = null;
@@ -1101,7 +1114,7 @@ public class HerculeDao {
 	public static List<StopAreaModel> getAllStopAreasNotCalculated() throws HerculeTechnicalException {
 		StringBuilder query = new StringBuilder("select * from ");
 		query.append(DBConstantes.T_STOP_AREA);
-		query.append(" where calculated = 0");
+		query.append(" where calculated = 0 and ignore_itineraire=0");
 
 		Connection conn = null;
 		PreparedStatement pstmt = null;
