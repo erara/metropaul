@@ -137,13 +137,11 @@ public class JourneyRunnable implements Runnable{
 
 										for(int j = 0; j < section.getStop_date_times().size() ; j++) {
 											StopDateTime sdt = section.getStop_date_times().get(j);
-											String name = sdt.getStop_point().getName();
-											String lat = sdt.getStop_point().getCoord().getLat();
-											String lon = sdt.getStop_point().getCoord().getLon();
-											int idStopArea = HerculeDao.getStopAreaFromTSTOPPOINT(name, lat, lon);
+											String id = sdt.getStop_point().getId();
+											int idStopArea = HerculeDao.getStopAreaFromTSTOPPOINT(id);
 											
 											if(idStopArea == -1) {
-												logger.error("non trouvé :" + name + "," + lat + "," + lon);
+												logger.error("stop_point non trouvé :" + id );
 											}
 											itineraireOutput.append(idStopArea);
 

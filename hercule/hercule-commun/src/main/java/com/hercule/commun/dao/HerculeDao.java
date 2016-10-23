@@ -347,8 +347,6 @@ public class HerculeDao {
 
 		if(!existStopArea(stopArea)) {
 
-//			logger.info("insertStopArea " + stopArea.getId());
-
 			StringBuilder query = new StringBuilder("insert into ");
 			query.append(DBConstantes.T_STOP_AREA);
 			query.append(" (");
@@ -389,10 +387,7 @@ public class HerculeDao {
 				close(null, pstmt, res);
 			}
 		} else {
-			logger.warn("Le stopArea  " + stopArea.getName() + " existe déjà");
-			logger.warn(stopArea.getId());
-			logger.warn(stopArea.getCoord().getLat());
-			logger.warn(stopArea.getCoord().getLon());
+			logger.warn("Le stopArea  " + stopArea.getName() + ": " + stopArea.getId() + " existe déjà");
 			
 			StringBuilder query = new StringBuilder("select id_stop_area from ");
 			query.append(DBConstantes.T_STOP_AREA);
@@ -412,7 +407,6 @@ public class HerculeDao {
 				if (res.next()) {
 					lastId = res.getInt(1);
 				}
-				logger.info("Stop area id récupéré : " + lastId);
 			} catch (SQLException e) {
 				throw new HerculeTechnicalException("Erreur insertStopArea, " + e.getMessage());
 			} finally {
@@ -522,9 +516,6 @@ public class HerculeDao {
 	public static void insertStopPoint(StopPoint stopPoint, int idStopArea, int idRoute) throws HerculeTechnicalException {
 
 		if(!existStopPoint(stopPoint, idStopArea, idRoute)) {
-
-
-//			logger.info("insertStopPoint " + stopPoint.getId() + "/"+ idStopArea + "/" + idRoute);
 
 			StringBuilder query = new StringBuilder("insert into ");
 			query.append(DBConstantes.T_STOP_POINT);
@@ -670,6 +661,8 @@ public class HerculeDao {
 		query.append(" = ?");
 		query.append(" and latitude ");
 		query.append(" = ?");
+		query.append(" and id_stop_point_navitia ");
+		query.append(" = ?");
 
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -683,6 +676,7 @@ public class HerculeDao {
 			pstmt.setInt (3, idStopArea);
 			pstmt.setString (4, stopPoint.getCoord().getLon());
 			pstmt.setString (5, stopPoint.getCoord().getLat());
+			pstmt.setString (6, stopPoint.getId());
 			res = pstmt.executeQuery();
 
 			while (res.next()) {
@@ -1004,12 +998,10 @@ public class HerculeDao {
 	}
 	
 	
-	public static int getStopAreaFromTSTOPPOINT(String name, String lat, String lon) throws HerculeTechnicalException {
+	public static int getStopAreaFromTSTOPPOINT(String id) throws HerculeTechnicalException {
 		StringBuilder query = new StringBuilder("select id_stop_area from ");
 		query.append(DBConstantes.T_STOP_POINT);
-		query.append(" where name = \"" + name + "\"");
-		query.append(" and longitude = '" + lon + "'");
-		query.append(" and latitude = '" + lat + "'");
+		query.append(" where id_stop_point_navitia=\"" +id+ "\"");
 		query.append(" LIMIT 1");
 		
 		Connection conn = null;
