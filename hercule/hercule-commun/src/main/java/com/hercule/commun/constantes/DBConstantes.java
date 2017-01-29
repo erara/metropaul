@@ -11,6 +11,7 @@ public class DBConstantes {
 	public static String T_STATION = "T_STATION";
 	public static String T_NETWORK = "T_NETWORK";
 	public static String T_LINE = "T_LINE";
+	public static String T_LINE_DIRECTION = "T_LINE_DIRECTION";
 	public static String T_ROUTE = "T_ROUTE";
 	public static String T_STOP_AREA = "T_STOP_AREA";
 	public static String T_STOP_AREA_LINE = "T_STOP_AREA_LINE";
@@ -45,6 +46,12 @@ public class DBConstantes {
 	public static String T_LINE_COLOR = "color";
 	public static String T_LINE_TRANSPORT_TYPE = "transport_type";
 	
+	/** T_LINE_DIRECTION colonnes */
+	public static String T_LINE_DIRECTION_CODE = "code";
+	public static String T_LINE_DIRECTION_LIBELLE = "libelle";
+	public static String T_LINE_DIRECTION_ID_DIRECTION = "id_direction";
+	
+	
 	/** T_ROUTE colonnes */
 	public static String T_ROUTE_ID = "id_route";
 	public static String T_ROUTE_LINE_ID = "id_line";
@@ -59,6 +66,8 @@ public class DBConstantes {
 	public static String T_STOP_AREA_ID_NAVITIA = "id_navitia";
 	public static String T_STOP_AREA_LONGITUDE = "longitude";
 	public static String T_STOP_AREA_LATITUDE = "latitude";
+	public static String T_STOP_AREA_ZONE = "zone";
+	public static String T_STOP_AREA_IGNORE_ITINERAIRE = "ignore_itineraire";
 	
 	/** T_STOP_AREA_LINE colonnes */
 	public static String T_STOP_AREA_LINE_ID_STOP_AREA = "id_stop_area";

@@ -59,8 +59,8 @@ public class StopAreaLine {
 
     public String transformToJson() {
     	JsonObjectBuilder jsonBuilder = Json.createObjectBuilder()
-    			.add("idStopArea", this.idStopArea)
-    			.add("idLine", this.idLine);
+    			.add("id_stop_area", this.idStopArea)
+    			.add("id_line", this.idLine);
     	return jsonBuilder.build().toString();
     }
     

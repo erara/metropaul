@@ -10,6 +10,8 @@ public class RouteModel {
 	private int idLine;
 	private String name;
     private String destination;
+    private String openingTime;
+    private String closingTime;
     private Date lastUpdate;
     
     public RouteModel() {
@@ -23,12 +25,30 @@ public class RouteModel {
 	 * @param destination
 	 * @param lastUpdate
 	 */
-	public RouteModel(int idRoute, int idLine, String name, String destination, Date lastUpdate) {
+	public RouteModel(int idRoute, int idLine, String name, String destination, Date lastUpdate, String openingTime, String closingTime) {
 		this.idRoute = idRoute;
 		this.idLine = idLine;
 		this.name = name;
 		this.destination = destination;
+		this.openingTime = openingTime;
+		this.closingTime = closingTime;
 		this.lastUpdate = lastUpdate;
+	}
+
+	public String getOpeningTime() {
+		return openingTime;
+	}
+
+	public void setOpeningTime(String openingTime) {
+		this.openingTime = openingTime;
+	}
+
+	public String getClosingTime() {
+		return closingTime;
+	}
+
+	public void setClosingTime(String closingTime) {
+		this.closingTime = closingTime;
 	}
 
 	/**
@@ -103,10 +123,12 @@ public class RouteModel {
 
     public String transformToJson() {
     	JsonObjectBuilder jsonBuilder = Json.createObjectBuilder()
-    			.add("idRoute", this.idRoute)
-    			.add("idLine", this.idLine)
+    			.add("id_route", this.idRoute)
+    			.add("id_line", this.idLine)
     			.add("name", this.name)
-    			.add("destination", this.destination);
+    			.add("destination", this.destination)
+    			.add("opening_time", this.openingTime)
+    			.add("closing_time", this.closingTime);
     	return jsonBuilder.build().toString();
     }
     

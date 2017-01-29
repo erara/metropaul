@@ -172,12 +172,12 @@ public class LineModel {
 
     public String transformToJson() {
     	JsonObjectBuilder jsonBuilder = Json.createObjectBuilder()
-    			.add("idLine", this.idLine)
+    			.add("id_line", this.idLine)
     			.add("code", this.code)
     			.add("name", this.name)
-    			.add("idNetwork", this.idNetwork)
-    			.add("openingTime", this.openingTime)
-    			.add("closingTime", this.closingTime)
+    			.add("id_network", this.idNetwork)
+    			.add("opening_time", this.openingTime)
+    			.add("closing_time", this.closingTime)
     			.add("color", this.color)
     			.add("transport_type", this.transport_type);
     	return jsonBuilder.build().toString();

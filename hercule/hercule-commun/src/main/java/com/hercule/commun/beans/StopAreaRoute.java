@@ -58,8 +58,8 @@ public class StopAreaRoute {
 
     public String transformToJson() {
     	JsonObjectBuilder jsonBuilder = Json.createObjectBuilder()
-    			.add("idStopArea", this.idStopArea)
-    			.add("idRoute", this.idRoute);
+    			.add("id_stop_area", this.idStopArea)
+    			.add("id_route", this.idRoute);
     	return jsonBuilder.build().toString();
     }
     

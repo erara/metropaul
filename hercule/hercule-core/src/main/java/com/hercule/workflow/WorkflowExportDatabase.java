@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
+
+import com.hercule.commun.beans.LineDirectionModel;
 import com.hercule.commun.beans.LineModel;
 import com.hercule.commun.beans.NetworkModel;
 import com.hercule.commun.beans.RouteModel;
@@ -36,7 +38,7 @@ public class WorkflowExportDatabase implements IWorkflow {
 
 
 
-		logger.info("Traitement d'import de la BDD");
+		logger.info("Traitement d'export de la BDD");
 
 		long startTime = System.currentTimeMillis();
 		try {
@@ -46,6 +48,7 @@ public class WorkflowExportDatabase implements IWorkflow {
 			outputDirectory = documentProperties.getProperty(FileConstantes.OUT_DIRECTORY);
 			exportNetworks(outputDirectory + documentProperties.getProperty(FileConstantes.NETWORKS_FILE));
 			exportLines(outputDirectory + documentProperties.getProperty(FileConstantes.LINES_FILE));
+			exportDirections(outputDirectory + documentProperties.getProperty(FileConstantes.DIRECTIONS_FILE));
 			exportRoutes(outputDirectory + documentProperties.getProperty(FileConstantes.ROUTES_FILE));
 			exportStopAreas(outputDirectory + documentProperties.getProperty(FileConstantes.STOP_AREAS_FILE));
 			exportStopAreaLine(outputDirectory + documentProperties.getProperty(FileConstantes.STOP_AREAS_LINE_FILE));
@@ -87,7 +90,8 @@ public class WorkflowExportDatabase implements IWorkflow {
 			}
 
 		} catch (IOException e) {
-			throw new HerculeTechnicalException("Erreur création du fichier networks.sql");
+			logger.error(e.getMessage());
+			throw new HerculeTechnicalException("Erreur création du fichier " + file);
 		} catch (HerculeTechnicalException e) {
 			throw e;
 		}
@@ -118,7 +122,37 @@ public class WorkflowExportDatabase implements IWorkflow {
 			}
 
 		} catch (IOException e) {
-			throw new HerculeTechnicalException("Erreur création du fichier lines.sql");
+			throw new HerculeTechnicalException("Erreur création du fichier " + file);
+		} catch (HerculeTechnicalException e) {
+			throw e;
+		}
+	}
+
+	private void exportDirections(String file) throws HerculeTechnicalException {
+		try {
+
+			List<LineDirectionModel> listModel = HerculeDao.getAllDirections();
+
+			if(listModel != null) {
+				BufferedWriter fichier = new BufferedWriter(
+						new FileWriter(file));
+
+				fichier.write("[");
+				boolean debut = true;
+				for(LineDirectionModel line : listModel) {
+					if(!debut) {
+						fichier.write(",");
+					}
+					fichier.write(line.transformToJson());
+					debut = false;
+				}
+				fichier.write("]");
+				fichier.close();
+
+			}
+
+		} catch (IOException e) {
+			throw new HerculeTechnicalException("Erreur création du fichier " + file);
 		} catch (HerculeTechnicalException e) {
 			throw e;
 		}
@@ -148,7 +182,7 @@ public class WorkflowExportDatabase implements IWorkflow {
 			}
 
 		} catch (IOException e) {
-			throw new HerculeTechnicalException("Erreur création du fichier routes.sql");
+			throw new HerculeTechnicalException("Erreur création du fichier " + file);
 		} catch (HerculeTechnicalException e) {
 			throw e;
 		}
@@ -177,7 +211,7 @@ public class WorkflowExportDatabase implements IWorkflow {
 			}
 
 		} catch (IOException e) {
-			throw new HerculeTechnicalException("Erreur création du fichier stopAreas.sql");
+			throw new HerculeTechnicalException("Erreur création du fichier " + file);
 		} catch (HerculeTechnicalException e) {
 			throw e;
 		}
@@ -207,7 +241,7 @@ public class WorkflowExportDatabase implements IWorkflow {
 			}
 
 		} catch (IOException e) {
-			throw new HerculeTechnicalException("Erreur création du fichier stopAreaLine.sql");
+			throw new HerculeTechnicalException("Erreur création du fichier " + file);
 		} catch (HerculeTechnicalException e) {
 			throw e;
 		}
@@ -237,7 +271,7 @@ public class WorkflowExportDatabase implements IWorkflow {
 			}
 
 		} catch (IOException e) {
-			throw new HerculeTechnicalException("Erreur création du fichier stopAreaLine.sql");
+			throw new HerculeTechnicalException("Erreur création du fichier " + file);
 		} catch (HerculeTechnicalException e) {
 			throw e;
 		}
@@ -267,7 +301,7 @@ public class WorkflowExportDatabase implements IWorkflow {
 			}
 
 		} catch (IOException e) {
-			throw new HerculeTechnicalException("Erreur création du fichier stopPoints.sql");
+			throw new HerculeTechnicalException("Erreur création du fichier " + file);
 		} catch (HerculeTechnicalException e) {
 			throw e;
 		}

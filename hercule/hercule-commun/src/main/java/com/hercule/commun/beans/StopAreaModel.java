@@ -12,6 +12,8 @@ public class StopAreaModel {
     private String idNavitia;
     private String longitude;
     private String latitude;
+    private int zone;
+    private int ignoreItineraire;
     private Date lastUpdate;
     
     public StopAreaModel() {
@@ -30,6 +32,34 @@ public class StopAreaModel {
 		this.name = name;
 		this.idNavitia = idNavitia;
 		this.lastUpdate = lastUpdate;
+	}
+	
+	/**
+	 * @return the zone
+	 */
+	public int getZone() {
+		return zone;
+	}
+
+	/**
+	 * @param zone the zone to set
+	 */
+	public void setZone(int zone) {
+		this.zone = zone;
+	}
+
+	/**
+	 * @return the ignoreItineraire
+	 */
+	public int getIgnoreItineraire() {
+		return ignoreItineraire;
+	}
+
+	/**
+	 * @param ignoreItineraire the ignoreItineraire to set
+	 */
+	public void setIgnoreItineraire(int ignoreItineraire) {
+		this.ignoreItineraire = ignoreItineraire;
 	}
 
 	/**
@@ -118,11 +148,12 @@ public class StopAreaModel {
 
     public String transformToJson() {
     	JsonObjectBuilder jsonBuilder = Json.createObjectBuilder()
-    			.add("idStopArea", this.idStopArea)
+    			.add("id_stop_area", this.idStopArea)
     			.add("name", this.name)
-    			.add("idNavitia", this.idNavitia)
     			.add("longitude", this.longitude)
-    			.add("latitude", this.latitude);
+    			.add("latitude", this.latitude)
+    			.add("zone", this.zone)
+    			.add("ignore_itineraire", this.ignoreItineraire);
     	return jsonBuilder.build().toString();
     }
 }

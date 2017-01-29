@@ -119,8 +119,11 @@ public class WorkflowImportDatabase implements IWorkflow {
 								tmpRoutes = RestManager.callNavitiaRoutesPagination(restTemplate, network.getId(), line.getId(), pageRoutes);
 							}
 							
+							
 							for (Route route : tmpRoutes.getRoutes()) {
 
+								HerculeDao.insertDirection(line.getCode(), route.getDirection().getName());
+								
 								/** Insertion de la Route en BDD */
 								idRoute = HerculeDao.insertRoute(route, idLine);
 

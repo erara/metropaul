@@ -36,30 +36,6 @@ public class ReadPropertiesFile {
 			throw new IOException(message);
 		}
 		
-//		String url = props.getProperty(DBConstantes.PROP_DB_URL);
-//		if (url == null) {
-//			throw new HerculeTechnicalException(
-//					"Le fichier de configuration de connection au serveur ne contient pas la propriete : " + DBConstantes.PROP_DB_URL);
-//		} else {
-//			documentProperties.put(DBConstantes.PROP_DB_URL, url);
-//		}
-//		
-//		String login = props.getProperty(DBConstantes.PROP_DB_LOGIN);
-//		if (login == null) {
-//			throw new HerculeTechnicalException(
-//					"Le fichier de configuration de connection au serveur ne contient pas la propriete : " + DBConstantes.PROP_DB_LOGIN);
-//		} else {
-//			documentProperties.put(DBConstantes.PROP_DB_LOGIN, login);
-//		}
-//		
-//		String password = props.getProperty(DBConstantes.PROP_DB_PASSWD);
-//		if (password == null) {
-//			throw new HerculeTechnicalException(
-//					"Le fichier de configuration de connection au serveur ne contient pas la propriete : " + DBConstantes.PROP_DB_PASSWD);
-//		} else {
-//			documentProperties.put(DBConstantes.PROP_DB_PASSWD, password);
-//		}
-		
 		return props;
 	}	
 }

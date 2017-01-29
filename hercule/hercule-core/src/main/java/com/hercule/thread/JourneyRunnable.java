@@ -130,7 +130,19 @@ public class JourneyRunnable implements Runnable{
 										itineraireOutput.append("####");
 									}
 
-									itineraireOutput.append(section.getDisplay_informations() != null ? section.getDisplay_informations().getCode() + "#" : "#" );
+									
+									if(section.getDisplay_informations() != null) {
+										itineraireOutput.append(section.getDisplay_informations().getCode() + "#");
+
+										//Recherche de l'id direction
+										int idDirection = HerculeDao.getDirectionFromTLINEDIRECTION(
+												section.getDisplay_informations().getCode(), 
+												section.getDisplay_informations().getDirection());
+										itineraireOutput.append(idDirection + "#");
+									} else {
+										itineraireOutput.append("##");
+									}
+									
 									itineraireOutput.append(section.getDuration() + "#");
 
 									if(section.getStop_date_times() != null) {
@@ -141,7 +153,7 @@ public class JourneyRunnable implements Runnable{
 											int idStopArea = HerculeDao.getStopAreaFromTSTOPPOINT(id);
 											
 											if(idStopArea == -1) {
-												logger.error("stop_point non trouvé :" + id );
+												logger.error("stop_point non trouvé :" + sdt.getStop_point().getName() + ":" + id );
 											}
 											itineraireOutput.append(idStopArea);
 

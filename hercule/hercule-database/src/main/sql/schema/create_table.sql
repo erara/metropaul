@@ -24,6 +24,13 @@ CREATE TABLE T_LINE (
     PRIMARY KEY (id_line)
 );
 
+CREATE TABLE T_LINE_DIRECTION (
+	id_direction INT NOT NULL AUTO_INCREMENT,
+	code VARCHAR(10),
+	libelle VARCHAR(200),
+    PRIMARY KEY (id_direction)
+);
+
 CREATE TABLE T_ROUTE (
 	id_route INT NOT NULL AUTO_INCREMENT,
 	id_line INT,

@@ -16,6 +16,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import com.hercule.commun.beans.LineDirectionModel;
 import com.hercule.commun.beans.LineModel;
 import com.hercule.commun.beans.NetworkModel;
 import com.hercule.commun.beans.RouteModel;
@@ -253,7 +254,7 @@ public class HerculeDao {
 				conn = DatabaseConnection.getConnection();
 				pstmt = conn.prepareStatement(query.toString(), Statement.RETURN_GENERATED_KEYS);
 				pstmt.setString (1, network.getId());
-				pstmt.setString (2, "ToDo");
+				pstmt.setString (2, network.getName());
 				pstmt.setDate (3, new java.sql.Date(today.getTime()));
 				pstmt.execute();
 
@@ -273,6 +274,47 @@ public class HerculeDao {
 		return lastId;
 	}
 
+	
+	public static int insertDirection(String code, String direction) throws HerculeTechnicalException {
+		int lastId = -1;
+
+		if(!existDirection(code, direction)) {
+
+			StringBuilder query = new StringBuilder("insert into ");
+			query.append(DBConstantes.T_LINE_DIRECTION);
+			query.append(" (");
+			query.append(DBConstantes.T_LINE_DIRECTION_CODE);
+			query.append(",");
+			query.append(DBConstantes.T_LINE_DIRECTION_LIBELLE);
+			query.append(") values (?,?)");
+
+			Connection conn = null;
+			PreparedStatement pstmt = null;
+			ResultSet res = null;
+			try {
+
+				conn = DatabaseConnection.getConnection();
+				pstmt = conn.prepareStatement(query.toString(), Statement.RETURN_GENERATED_KEYS);
+				pstmt.setString (1, code);
+				pstmt.setString (2, direction);
+				pstmt.execute();
+
+				res = pstmt.getGeneratedKeys();
+				if (res.next()) {
+					lastId = res.getInt(1);
+				}
+			} catch (SQLException e) {
+				throw new HerculeTechnicalException("Erreur insertDirection, " + e.getMessage());
+			} finally {
+				close(null, pstmt, res);
+			}
+		} else {
+			logger.warn("La direction  " + direction + " existe déjà");
+		}
+
+		return lastId;
+	}
+	
 	/**
 	 * Création d'une Route en BDD
 	 * @param route
@@ -645,6 +687,49 @@ public class HerculeDao {
 	 * @return
 	 * @throws HerculeTechnicalException
 	 */
+	public static boolean existDirection(String code, String direction) throws HerculeTechnicalException {
+		boolean exist = false;
+
+		StringBuilder query = new StringBuilder("select * from ");
+		query.append(DBConstantes.T_LINE_DIRECTION);
+		query.append(" where ");
+		query.append(DBConstantes.T_LINE_DIRECTION_CODE);
+		query.append(" = ? and ");
+		query.append(DBConstantes.T_LINE_DIRECTION_LIBELLE);
+		query.append(" = ?");
+
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet res = null;
+
+		try {
+			conn = DatabaseConnection.getConnection();
+			pstmt = conn.prepareStatement(query.toString());
+			pstmt.setString (1, code);
+			pstmt.setString (2, direction);
+			res = pstmt.executeQuery();
+
+			while (res.next()) {
+				exist = true;
+			}
+
+		} catch (SQLException e) {
+			throw new HerculeTechnicalException("Erreur existLine, " + e.getMessage());
+		} finally {
+			close(null, pstmt, res);
+		}
+
+		return exist;
+	}
+	
+	
+
+	/**
+	 * Fonction de vérification d'existence d'une ligne
+	 * @param line
+	 * @return
+	 * @throws HerculeTechnicalException
+	 */
 	public static boolean existStopPoint(StopPoint stopPoint, int idStopArea, int idRoute) throws HerculeTechnicalException {
 		boolean exist = false;
 
@@ -962,6 +1047,40 @@ public class HerculeDao {
 	}
 	
 	
+	public static List<LineDirectionModel> getAllDirections() throws HerculeTechnicalException {
+		StringBuilder query = new StringBuilder("select * from ");
+		query.append(DBConstantes.T_LINE_DIRECTION);
+
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet res = null;
+		List<LineDirectionModel> listModel = null;
+
+		try {
+			conn = DatabaseConnection.getConnection();
+			pstmt = conn.prepareStatement(query.toString());
+			res = pstmt.executeQuery();
+			
+			while (res.next()) {
+				if(listModel == null) {
+					listModel = new ArrayList<LineDirectionModel>();
+				}
+				
+				LineDirectionModel model = new LineDirectionModel();
+				model.setIdDirection(res.getInt(DBConstantes.T_LINE_DIRECTION_ID_DIRECTION));
+				model.setCode(res.getString(DBConstantes.T_LINE_DIRECTION_CODE));
+				model.setLibelle(res.getString(DBConstantes.T_LINE_DIRECTION_LIBELLE));
+				listModel.add(model);
+			}
+		} catch (SQLException e) {
+			throw new HerculeTechnicalException("Erreur getAllDirections, " + e.getMessage());
+		} finally {
+			close(null, pstmt, res);
+		}
+		return listModel;
+	}
+	
+	
 	public static List<RouteModel> getAllRoutes() throws HerculeTechnicalException {
 		StringBuilder query = new StringBuilder("select * from ");
 		query.append(DBConstantes.T_ROUTE);
@@ -986,6 +1105,8 @@ public class HerculeDao {
 				model.setDestination(res.getString(DBConstantes.T_ROUTE_DESTINATION));
 				model.setIdLine(res.getInt(DBConstantes.T_ROUTE_LINE_ID));
 				model.setName(res.getString(DBConstantes.T_ROUTE_NAME));
+				model.setOpeningTime(res.getString(DBConstantes.T_ROUTE_OPENING_TIME));
+				model.setClosingTime(res.getString(DBConstantes.T_ROUTE_CLOSING_TIME));
 				model.setLastUpdate(res.getDate(DBConstantes.T_LAST_UPDATE));
 				listModel.add(model);
 			}
@@ -1024,6 +1145,36 @@ public class HerculeDao {
 			close(null, pstmt, res);
 		}
 		return idStopArea;
+	}
+	
+	
+	public static int getDirectionFromTLINEDIRECTION(String code, String libelle) throws HerculeTechnicalException {
+		StringBuilder query = new StringBuilder("select id_direction from ");
+		query.append(DBConstantes.T_LINE_DIRECTION);
+		query.append(" where code = \"" + code + "\"");
+		query.append(" and libelle = \"" + libelle + "\"");
+		query.append(" LIMIT 1");
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet res = null;
+		int idDirection = -1;
+		
+
+		try {
+			conn = DatabaseConnection.getConnection();
+			pstmt = conn.prepareStatement(query.toString());
+			res = pstmt.executeQuery();
+			
+			while (res.next()) {
+				idDirection = res.getInt(DBConstantes.T_LINE_DIRECTION_ID_DIRECTION);
+			}
+		} catch (SQLException e) {
+			throw new HerculeTechnicalException("Erreur getDirection, " + e.getMessage());
+		} finally {
+			close(null, pstmt, res);
+		}
+		return idDirection;
 	}
 	
 	public static List<StopAreaModel> getAllStopAreaNoFlag () throws HerculeTechnicalException {
@@ -1092,6 +1243,8 @@ public class HerculeDao {
 				model.setName(res.getString(DBConstantes.T_STOP_AREA_NAME));
 				model.setLongitude(res.getString(DBConstantes.T_STOP_AREA_LONGITUDE));
 				model.setLatitude(res.getString(DBConstantes.T_STOP_AREA_LATITUDE));
+				model.setZone(res.getInt(DBConstantes.T_STOP_AREA_ZONE));
+				model.setIgnoreItineraire(res.getInt(DBConstantes.T_STOP_AREA_IGNORE_ITINERAIRE));
 				model.setLastUpdate(res.getDate(DBConstantes.T_LAST_UPDATE));
 				listModel.add(model);
 			}

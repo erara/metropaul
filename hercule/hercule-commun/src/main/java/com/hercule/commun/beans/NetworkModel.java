@@ -87,8 +87,9 @@ public class NetworkModel {
     
     public String transformToJson() {
     	JsonObjectBuilder jsonBuilder = Json.createObjectBuilder()
-    			.add("idNetwork", this.idNetwork)
-    			.add("type", this.type);
+    			.add("id_network", this.idNetwork)
+    			.add("type", this.type)
+    			.add("generique_type", this.generiqueType);
     	return jsonBuilder.build().toString();
     }
 }

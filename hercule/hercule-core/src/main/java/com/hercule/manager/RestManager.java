@@ -187,6 +187,12 @@ public class RestManager {
 		url_Journey.append(ADD_PARAM_URL);
 		url_Journey.append("forbidden_uris%5B%5D=network%3AOIF%3A56");
 		url_Journey.append(ADD_PARAM_URL);
+		url_Journey.append("forbidden_uris%5B%5D=network%3ATN");
+		url_Journey.append(ADD_PARAM_URL);
+		url_Journey.append("forbidden_uris%5B%5D=network%3ATER");
+		url_Journey.append(ADD_PARAM_URL);
+		url_Journey.append("forbidden_uris%5B%5D=network%3Asncf");
+		url_Journey.append(ADD_PARAM_URL);
 		url_Journey.append("last_section_mode=walking");
 		url_Journey.append(ADD_PARAM_URL);
 		url_Journey.append("data_freshness=base_schedule");

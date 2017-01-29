@@ -135,11 +135,11 @@ public class StopPointModel {
 
     public String transformToJson() {
     	JsonObjectBuilder jsonBuilder = Json.createObjectBuilder()
-    			.add("idStopPoint", this.idStopPoint)
+    			.add("id_stop_point", this.idStopPoint)
     			.add("name", this.name)
-    			.add("idStopArea", this.idStopArea)
-    			.add("idRoute", this.idRoute)
-    			.add("longitude", this.idRoute)
+    			.add("id_stop_area", this.idStopArea)
+    			.add("id_route", this.idRoute)
+    			.add("longitude", this.longitude)
     			.add("latitude", this.latitude);
     	return jsonBuilder.build().toString();
     }
