@@ -5,8 +5,6 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Properties;
 
 import org.apache.http.auth.AuthScope;
@@ -46,7 +44,7 @@ public class RestManager {
 	private static String SLASH_PARAM_URL = "/";
 
 	/**
-	 * Initialisation des properties sp�cifiques aux appels WS
+	 * Initialisation des properties spécifiques aux appels WS
 	 * @param fileName
 	 * @throws HerculeTechnicalException
 	 * @throws IOException
@@ -59,7 +57,7 @@ public class RestManager {
 	}
 
 	/**
-	 * Cr�ation d'un template REST pour appel WS
+	 * Création d'un template REST pour appel WS
 	 * @param username
 	 * @param password
 	 * @return
@@ -116,7 +114,7 @@ public class RestManager {
 	public static Lines callNavitiaLinesPagination(RestTemplate restTemplate, String idNetwork, int itLigne) throws MalformedURLException, URISyntaxException {
 		String url_lines = urlWSNavitia + "/networks/" + idNetwork + "/lines";
 		String url_lines_pagination = setJSONPage(url_lines, itLigne);
-		logger.info("Appel WS Navitia Lines pagin�es : " + url_lines_pagination);
+		logger.info("Appel WS Navitia Lines paginées : " + url_lines_pagination);
 		URL url_navitia_lines = new URL(url_lines_pagination);
 		URI url_uri_navitia_lines = url_navitia_lines.toURI();
 		return restTemplate.getForObject(url_uri_navitia_lines, Lines.class);
@@ -133,7 +131,7 @@ public class RestManager {
 	public static Routes callNavitiaRoutesPagination(RestTemplate restTemplate, String idNetwork, String idLine, int itRoutes) throws MalformedURLException, URISyntaxException {
 		String url_routes = urlWSNavitia + "/networks/" + idNetwork + "/lines" + "/" + idLine + "/routes";
 		String url_routes_pagination=setJSONPage(url_routes, itRoutes);
-		logger.info("Appel WS Navitia Routes pagin�es : " + url_routes_pagination.toString());
+		logger.info("Appel WS Navitia Routes paginées : " + url_routes_pagination.toString());
 		URL url_navitia_routes = new URL(url_routes_pagination);
 		URI url_uri_navitia_routes = url_navitia_routes.toURI();
 		return restTemplate.getForObject(url_uri_navitia_routes, Routes.class);

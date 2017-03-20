@@ -57,7 +57,7 @@ public class WorkflowImportDatabase implements IWorkflow {
 			e.printStackTrace();
 		}
 		long endTime = System.currentTimeMillis();
-		logger.info("Fin du traitement. Temps d'exécution :"+ (endTime-startTime) / 1000 + "s");
+		logger.info("Fin du traitement. Temps d'exÃ©cution :"+ (endTime-startTime) / 1000 + "s");
 
 	}
 
@@ -73,20 +73,20 @@ public class WorkflowImportDatabase implements IWorkflow {
 
 		try {
 
-			/** Récupération des networks autorisés par Metropaul */
+			/** RÃ©cupÃ©ration des networks autorisÃ©s par Metropaul */
 			Map<String, String> authNetworks = HerculeDao.getAuthorizedNetworks();
 
 			if(authNetworks == null) {
-				logger.error("Aucun network autorisé trouvé");
+				logger.error("Aucun network autorisÃ© trouvÃ©");
 				return;
 			}
 
-			/** Création du template Rest pour l'appel à Navitia */
+			/** CrÃ©ation du template Rest pour l'appel Ã© Navitia */
 			RestTemplate restTemplate = RestManager.createRestTemplate();
 
 			for (String networkName : authNetworks.keySet()) {
 				
-				/** Récupération du network */
+				/** RÃ©cupÃ©ration du network */
 				String realNetworkId = authNetworks.get(networkName);
 				Networks networks = RestManager.callNavitiaAuthNetwork(restTemplate, realNetworkId);
 				
@@ -94,13 +94,13 @@ public class WorkflowImportDatabase implements IWorkflow {
 				Network network = networks.getNetworks().get(0);
 				idNetwork = HerculeDao.insertNetwork(network);
 
-				/** Appel WS pour récupération des Lines */
+				/** Appel WS pour rÃ©cupÃ©ration des Lines */
 				Lines tmpLines = RestManager.callNavitiaLines(restTemplate, network.getId());
 				int pageLines = 0;
 
 				do {
 
-					/** Appel WS pour récupération des Lines paginées */
+					/** Appel WS pour rÃ©cupÃ©ration des Lines paginÃ©es */
 					if(pageLines != 0) {
 						tmpLines = RestManager.callNavitiaLinesPagination(restTemplate, network.getId(), pageLines);
 					}
@@ -109,25 +109,23 @@ public class WorkflowImportDatabase implements IWorkflow {
 						/** Insertion de la ligne en BDD */
 						idLine = HerculeDao.insertLine(line, idNetwork);
 						
-						/** Appel WS pour récupération des Routes */
+						/** Appel WS pour rÃ©cupÃ©ration des Routes */
 						Routes tmpRoutes = RestManager.callNavitiaRoutes(restTemplate, network.getId(), line.getId());
 						int pageRoutes = 0;
 						
 						do {
-							/** Appel WS pour récupération des Routes paginées */
+							/** Appel WS pour rÃ©cupÃ©ration des Routes paginÃ©es */
 							if(pageRoutes != 0) {
 								tmpRoutes = RestManager.callNavitiaRoutesPagination(restTemplate, network.getId(), line.getId(), pageRoutes);
 							}
 							
 							
 							for (Route route : tmpRoutes.getRoutes()) {
-
-								HerculeDao.insertDirection(line.getCode(), route.getDirection().getName());
 								
 								/** Insertion de la Route en BDD */
 								idRoute = HerculeDao.insertRoute(route, idLine);
 
-								/** Appel WS pour récupération des StopArea */
+								/** Appel WS pour rÃ©cupÃ©ration des StopArea */
 								tmpStopAreas = RestManager.callNavitiaStopAreas(restTemplate, network.getId(), line.getId(), route.getId());
 								int pageStopAreas = 0;
 								
@@ -144,7 +142,7 @@ public class WorkflowImportDatabase implements IWorkflow {
 										HerculeDao.insertStopAreaLine(idStopArea, idLine);
 										HerculeDao.insertStopAreaRoute(idStopArea, idRoute);
 
-										/** Appel WS pour récupération des StopPoints */
+										/** Appel WS pour rÃ©cupÃ©ration des StopPoints */
 										tmpStopPoints = RestManager.callNavitiaStopPoints(restTemplate, stopArea.getId());
 
 										for (StopPoint stopPoint : tmpStopPoints.getStop_points()){

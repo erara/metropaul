@@ -68,7 +68,7 @@ public class HerculeDao {
 		} catch (SQLException e) {
 			throw new HerculeTechnicalException("Erreur getItineraires - sql exception, " + e.getMessage());
 		} catch (IOException e) {
-			throw new HerculeTechnicalException("Erreur getItineraires - cr�ation du fichier, " + e.getMessage());
+			throw new HerculeTechnicalException("Erreur getItineraires - création du fichier, " + e.getMessage());
 		} finally {
 			close(null, pstmt, res);
 		}
@@ -113,7 +113,7 @@ public class HerculeDao {
 		} catch (SQLException e) {
 			throw new HerculeTechnicalException("Erreur getItineraires - sql exception, " + e.getMessage());
 		} catch (IOException e) {
-			throw new HerculeTechnicalException("Erreur getItineraires - cr�ation du fichier, " + e.getMessage());
+			throw new HerculeTechnicalException("Erreur getItineraires - création du fichier, " + e.getMessage());
 		} finally {
 			close(null, pstmt, res);
 		}
@@ -153,7 +153,7 @@ public class HerculeDao {
 	}
 
 	/**
-	 * Cr�ation d'une Ligne en BDD
+	 * Création d'une Ligne en BDD
 	 * @param line
 	 * @param idNetwork
 	 * @return
@@ -214,14 +214,14 @@ public class HerculeDao {
 				close(null, pstmt, res);
 			}
 		} else {
-			logger.warn("La ligne  " + line.getName() + " existe d�j�");
+			logger.warn("La ligne  " + line.getName() + " existe déjà");
 		}
 
 		return lastId;
 	}
 
 	/**
-	 * Cr�ation d'un r�seau en BDD
+	 * Création d'un réseau en BDD
 	 * @param s
 	 * @return
 	 * @throws HerculeTechnicalException
@@ -268,7 +268,7 @@ public class HerculeDao {
 				close(null, pstmt, res);
 			}
 		} else {
-			logger.warn("Le r�seau  " + network.getId() + " existe d�j�");
+			logger.warn("Le réseau  " + network.getId() + " existe déjà");
 		}
 
 		return lastId;
@@ -309,14 +309,14 @@ public class HerculeDao {
 				close(null, pstmt, res);
 			}
 		} else {
-			logger.warn("La direction  " + direction + " existe d�j�");
+			logger.warn("La direction  " + direction + " existe déjà");
 		}
 
 		return lastId;
 	}
 
 	/**
-	 * Cr�ation d'une Route en BDD
+	 * Création d'une Route en BDD
 	 * @param route
 	 * @return
 	 * @throws HerculeTechnicalException
@@ -371,14 +371,14 @@ public class HerculeDao {
 				close(null, pstmt, res);
 			}
 		} else {
-			logger.warn("La route  " + route.getId() + " existe d�j�");
+			logger.warn("La route  " + route.getId() + " existe déjà");
 		}
 
 		return lastId;
 	}
 
 	/**
-	 * Cr�ation d'un StopArea en BDD
+	 * Création d'un StopArea en BDD
 	 * @param stopArea
 	 * @param idLigne
 	 * @return
@@ -429,7 +429,7 @@ public class HerculeDao {
 				close(null, pstmt, res);
 			}
 		} else {
-			logger.warn("Le stopArea  " + stopArea.getName() + ": " + stopArea.getId() + " existe d�j�");
+			logger.warn("Le stopArea  " + stopArea.getName() + ": " + stopArea.getId() + " existe déjà");
 
 			StringBuilder query = new StringBuilder("select id_stop_area from ");
 			query.append(DBConstantes.T_STOP_AREA);
@@ -460,7 +460,7 @@ public class HerculeDao {
 	}
 
 	/**
-	 * Cr�ation d'un StopAreaLine en BDD
+	 * Création d'un StopAreaLine en BDD
 	 * @param idStopArea
 	 * @param idLine
 	 * @throws HerculeTechnicalException
@@ -501,14 +501,14 @@ public class HerculeDao {
 				close(null, pstmt, res);
 			}
 		} else {
-			logger.warn("insertStopAreaLine " + idStopArea + "/"+ idLine + " existe d�j�");
+			logger.warn("insertStopAreaLine " + idStopArea + "/"+ idLine + " existe déjà");
 		}
 
 
 	}
 
 	/**
-	 * Cr�ation d'un StopAreaLine en BDD
+	 * Création d'un StopAreaLine en BDD
 	 * @param idStopArea
 	 * @param idLine
 	 * @throws HerculeTechnicalException
@@ -551,7 +551,7 @@ public class HerculeDao {
 				close(null, pstmt, res);
 			}
 		} else {
-			logger.warn("insertStopAreaRoute " + idStopArea + "/"+ idRoute + " existe d�j�");
+			logger.warn("insertStopAreaRoute " + idStopArea + "/"+ idRoute + " existe déjà");
 		}
 	}
 
@@ -600,7 +600,7 @@ public class HerculeDao {
 				close(null, pstmt, res);
 			}
 		} else {
-			logger.info("insertStopPoint " + stopPoint.getId() + "/"+ idStopArea + "/" + idRoute +" existe d�j�");
+			logger.info("insertStopPoint " + stopPoint.getId() + "/"+ idStopArea + "/" + idRoute +" existe déjà");
 
 		}
 	}
@@ -644,7 +644,7 @@ public class HerculeDao {
 	}
 
 	/**
-	 * Fonction de v�rification d'existence d'une ligne
+	 * Fonction de vérification d'existence d'une ligne
 	 * @param line
 	 * @return
 	 * @throws HerculeTechnicalException
@@ -682,7 +682,7 @@ public class HerculeDao {
 	}
 
 	/**
-	 * Fonction de v�rification d'existence d'une ligne
+	 * Fonction de vérification d'existence d'une ligne
 	 * @param line
 	 * @return
 	 * @throws HerculeTechnicalException
@@ -725,7 +725,7 @@ public class HerculeDao {
 
 
 	/**
-	 * Fonction de v�rification d'existence d'une ligne
+	 * Fonction de vérification d'existence d'une ligne
 	 * @param line
 	 * @return
 	 * @throws HerculeTechnicalException
@@ -778,7 +778,7 @@ public class HerculeDao {
 	}
 
 	/**
-	 * Fonction de v�rification d'existence d'une ligne
+	 * Fonction de vérification d'existence d'une ligne
 	 * @param line
 	 * @return
 	 * @throws HerculeTechnicalException
@@ -820,7 +820,7 @@ public class HerculeDao {
 	}
 
 	/**
-	 * Fonction de v�rification d'existence d'une ligne
+	 * Fonction de vérification d'existence d'une ligne
 	 * @param line
 	 * @return
 	 * @throws HerculeTechnicalException
@@ -862,7 +862,7 @@ public class HerculeDao {
 	}
 
 	/**
-	 * Fonction de v�rification d'existence d'un Network
+	 * Fonction de vérification d'existence d'un Network
 	 * @param network
 	 * @return
 	 * @throws HerculeTechnicalException
@@ -900,7 +900,7 @@ public class HerculeDao {
 	}
 
 	/**
-	 * Fonction de v�rification d'existence d'un stopArea
+	 * Fonction de vérification d'existence d'un stopArea
 	 * @param route
 	 * @return
 	 * @throws HerculeTechnicalException
