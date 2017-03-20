@@ -10,4 +10,5 @@ public class WSConstantes {
 	public static final String DATE_DERNIER_DEPART_SEMAINE = "DATE_DERNIER_DEPART_SEMAINE";
 	public static final String DATE_PREMIER_DEPART_WE = "DATE_PREMIER_DEPART_WE";
 	public static final String DATE_DERNIER_DEPART_WE = "DATE_DERNIER_DEPART_WE";
+	public static final String PROP_NB_THREAD = "NB_THREAD";
 }

@@ -27,7 +27,7 @@ public class WorkflowItineraires implements IWorkflow{
 	private static final Logger logger = Logger.getLogger(WorkflowItineraires.class.getName());
 	private static String propertiesFilename;
 	private ThreadPoolExecutor threadPool = null;
-	private static int CORE_POOL_SIZE = 10;
+	private static int CORE_POOL_SIZE;
 	private static String datetime;
 	private static String datePremierDepartSemaine;
 	private static String dateDernierDepartSemaine;
@@ -52,6 +52,7 @@ public class WorkflowItineraires implements IWorkflow{
 			dateDernierDepartSemaine = documentProperties.getProperty(WSConstantes.DATE_DERNIER_DEPART_SEMAINE);
 			datePremierDepartWE = documentProperties.getProperty(WSConstantes.DATE_PREMIER_DEPART_WE);
 			dateDernierDepartWE = documentProperties.getProperty(WSConstantes.DATE_DERNIER_DEPART_WE);
+			CORE_POOL_SIZE = Integer.parseInt(documentProperties.getProperty(WSConstantes.PROP_NB_THREAD));
 			calculItineraires();
 			DatabaseConnection.closeConnection();
 		} catch (HerculeTechnicalException e) {
