@@ -38,8 +38,8 @@ public class HerculeDao {
 
 	/** Private Logger logger */
 	private static final Logger logger = Logger.getLogger(HerculeDao.class.getName());
-	
-	
+
+
 	public static void getStopAreaIdAndName() throws HerculeTechnicalException{
 
 		StringBuilder query = new StringBuilder("select " + DBConstantes.T_STOP_AREA_NAME + ", " + DBConstantes.T_STOP_AREA_ID + " from ");
@@ -68,15 +68,15 @@ public class HerculeDao {
 		} catch (SQLException e) {
 			throw new HerculeTechnicalException("Erreur getItineraires - sql exception, " + e.getMessage());
 		} catch (IOException e) {
-			throw new HerculeTechnicalException("Erreur getItineraires - création du fichier, " + e.getMessage());
+			throw new HerculeTechnicalException("Erreur getItineraires - crï¿½ation du fichier, " + e.getMessage());
 		} finally {
 			close(null, pstmt, res);
 		}
 	}
-	
+
 	public static void getItineraires(String file) throws HerculeTechnicalException {
 
-		
+
 		StringBuilder query = new StringBuilder("select * from ");
 		query.append(DBConstantes.T_ITINERAIRES);
 
@@ -113,13 +113,13 @@ public class HerculeDao {
 		} catch (SQLException e) {
 			throw new HerculeTechnicalException("Erreur getItineraires - sql exception, " + e.getMessage());
 		} catch (IOException e) {
-			throw new HerculeTechnicalException("Erreur getItineraires - création du fichier, " + e.getMessage());
+			throw new HerculeTechnicalException("Erreur getItineraires - crï¿½ation du fichier, " + e.getMessage());
 		} finally {
 			close(null, pstmt, res);
 		}
 	}
-	
-	
+
+
 	public static Map<String, String> getAuthorizedNetworks() throws HerculeTechnicalException {
 
 		StringBuilder query = new StringBuilder("select * from ");
@@ -140,7 +140,7 @@ public class HerculeDao {
 				if(authNetworks == null) {
 					authNetworks = new HashMap<String, String>();
 				}
-				
+
 				authNetworks.put(res.getString(DBConstantes.T_AUTH_NETWORKS_NAME), res.getString(DBConstantes.T_AUTH_NETWORKS_ID));
 			}
 
@@ -153,7 +153,7 @@ public class HerculeDao {
 	}
 
 	/**
-	 * Création d'une Ligne en BDD
+	 * Crï¿½ation d'une Ligne en BDD
 	 * @param line
 	 * @param idNetwork
 	 * @return
@@ -214,14 +214,14 @@ public class HerculeDao {
 				close(null, pstmt, res);
 			}
 		} else {
-			logger.warn("La ligne  " + line.getName() + " existe déjà");
+			logger.warn("La ligne  " + line.getName() + " existe dï¿½jï¿½");
 		}
 
 		return lastId;
 	}
 
 	/**
-	 * Création d'un réseau en BDD
+	 * Crï¿½ation d'un rï¿½seau en BDD
 	 * @param s
 	 * @return
 	 * @throws HerculeTechnicalException
@@ -268,13 +268,13 @@ public class HerculeDao {
 				close(null, pstmt, res);
 			}
 		} else {
-			logger.warn("Le réseau  " + network.getId() + " existe déjà");
+			logger.warn("Le rï¿½seau  " + network.getId() + " existe dï¿½jï¿½");
 		}
 
 		return lastId;
 	}
 
-	
+
 	public static int insertDirection(String code, String direction) throws HerculeTechnicalException {
 		int lastId = -1;
 
@@ -309,14 +309,14 @@ public class HerculeDao {
 				close(null, pstmt, res);
 			}
 		} else {
-			logger.warn("La direction  " + direction + " existe déjà");
+			logger.warn("La direction  " + direction + " existe dï¿½jï¿½");
 		}
 
 		return lastId;
 	}
-	
+
 	/**
-	 * Création d'une Route en BDD
+	 * Crï¿½ation d'une Route en BDD
 	 * @param route
 	 * @return
 	 * @throws HerculeTechnicalException
@@ -371,18 +371,18 @@ public class HerculeDao {
 				close(null, pstmt, res);
 			}
 		} else {
-			logger.warn("La route  " + route.getId() + " existe déjà");
+			logger.warn("La route  " + route.getId() + " existe dï¿½jï¿½");
 		}
 
 		return lastId;
 	}
 
 	/**
-	 * Création d'un StopArea en BDD
+	 * Crï¿½ation d'un StopArea en BDD
 	 * @param stopArea
 	 * @param idLigne
 	 * @return
-	 * @throws HerculeTechnicalException 
+	 * @throws HerculeTechnicalException
 	 */
 	public static int insertStopArea(StopArea stopArea) throws HerculeTechnicalException {
 		int lastId = -1;
@@ -429,8 +429,8 @@ public class HerculeDao {
 				close(null, pstmt, res);
 			}
 		} else {
-			logger.warn("Le stopArea  " + stopArea.getName() + ": " + stopArea.getId() + " existe déjà");
-			
+			logger.warn("Le stopArea  " + stopArea.getName() + ": " + stopArea.getId() + " existe dï¿½jï¿½");
+
 			StringBuilder query = new StringBuilder("select id_stop_area from ");
 			query.append(DBConstantes.T_STOP_AREA);
 			query.append(" where name = ?");
@@ -460,7 +460,7 @@ public class HerculeDao {
 	}
 
 	/**
-	 * Création d'un StopAreaLine en BDD
+	 * Crï¿½ation d'un StopAreaLine en BDD
 	 * @param idStopArea
 	 * @param idLine
 	 * @throws HerculeTechnicalException
@@ -501,14 +501,14 @@ public class HerculeDao {
 				close(null, pstmt, res);
 			}
 		} else {
-			logger.warn("insertStopAreaLine " + idStopArea + "/"+ idLine + " existe déjà");
+			logger.warn("insertStopAreaLine " + idStopArea + "/"+ idLine + " existe dï¿½jï¿½");
 		}
 
 
 	}
 
 	/**
-	 * Création d'un StopAreaLine en BDD
+	 * Crï¿½ation d'un StopAreaLine en BDD
 	 * @param idStopArea
 	 * @param idLine
 	 * @throws HerculeTechnicalException
@@ -551,7 +551,7 @@ public class HerculeDao {
 				close(null, pstmt, res);
 			}
 		} else {
-			logger.warn("insertStopAreaRoute " + idStopArea + "/"+ idRoute + " existe déjà");
+			logger.warn("insertStopAreaRoute " + idStopArea + "/"+ idRoute + " existe dï¿½jï¿½");
 		}
 	}
 
@@ -600,16 +600,16 @@ public class HerculeDao {
 				close(null, pstmt, res);
 			}
 		} else {
-			logger.info("insertStopPoint " + stopPoint.getId() + "/"+ idStopArea + "/" + idRoute +" existe déjà");
+			logger.info("insertStopPoint " + stopPoint.getId() + "/"+ idStopArea + "/" + idRoute +" existe dï¿½jï¿½");
 
 		}
 	}
-	
+
 	public synchronized static void insertItineraires(int id_stop_area_from, List<String> itineraires) throws HerculeTechnicalException {
 
 		for(String builder : itineraires) {
 //			logger.info("insertItineraire " + id_stop_area_from);
-			
+
 			String[] split = builder.split(";");
 
 			StringBuilder query = new StringBuilder("insert into ");
@@ -640,11 +640,11 @@ public class HerculeDao {
 				close(null, pstmt, res);
 			}
 		}
-		
+
 	}
 
 	/**
-	 * Fonction de vérification d'existence d'une ligne
+	 * Fonction de vï¿½rification d'existence d'une ligne
 	 * @param line
 	 * @return
 	 * @throws HerculeTechnicalException
@@ -682,7 +682,7 @@ public class HerculeDao {
 	}
 
 	/**
-	 * Fonction de vérification d'existence d'une ligne
+	 * Fonction de vï¿½rification d'existence d'une ligne
 	 * @param line
 	 * @return
 	 * @throws HerculeTechnicalException
@@ -721,11 +721,11 @@ public class HerculeDao {
 
 		return exist;
 	}
-	
-	
+
+
 
 	/**
-	 * Fonction de vérification d'existence d'une ligne
+	 * Fonction de vï¿½rification d'existence d'une ligne
 	 * @param line
 	 * @return
 	 * @throws HerculeTechnicalException
@@ -778,7 +778,7 @@ public class HerculeDao {
 	}
 
 	/**
-	 * Fonction de vérification d'existence d'une ligne
+	 * Fonction de vï¿½rification d'existence d'une ligne
 	 * @param line
 	 * @return
 	 * @throws HerculeTechnicalException
@@ -820,7 +820,7 @@ public class HerculeDao {
 	}
 
 	/**
-	 * Fonction de vérification d'existence d'une ligne
+	 * Fonction de vï¿½rification d'existence d'une ligne
 	 * @param line
 	 * @return
 	 * @throws HerculeTechnicalException
@@ -862,7 +862,7 @@ public class HerculeDao {
 	}
 
 	/**
-	 * Fonction de vérification d'existence d'un Network
+	 * Fonction de vï¿½rification d'existence d'un Network
 	 * @param network
 	 * @return
 	 * @throws HerculeTechnicalException
@@ -900,7 +900,7 @@ public class HerculeDao {
 	}
 
 	/**
-	 * Fonction de vérification d'existence d'un stopArea
+	 * Fonction de vï¿½rification d'existence d'un stopArea
 	 * @param route
 	 * @return
 	 * @throws HerculeTechnicalException
@@ -968,11 +968,11 @@ public class HerculeDao {
 
 		return exist;
 	}
-	
-	
-	
+
+
+
 	public static List<NetworkModel> getAllNetwork() throws HerculeTechnicalException {
-		
+
 		StringBuilder query = new StringBuilder("select * from ");
 		query.append(DBConstantes.T_NETWORK);
 
@@ -985,12 +985,12 @@ public class HerculeDao {
 			conn = DatabaseConnection.getConnection();
 			pstmt = conn.prepareStatement(query.toString());
 			res = pstmt.executeQuery();
-			
+
 			while (res.next()) {
 				if(listModel == null) {
 					listModel = new ArrayList<NetworkModel>();
 				}
-				
+
 				NetworkModel model = new NetworkModel();
 				model.setIdNetwork(res.getInt(DBConstantes.T_NETWORK_ID));
 				model.setGeneriqueType(res.getString(DBConstantes.T_NETWORK_GENERIQUE_TYPE));
@@ -1005,8 +1005,8 @@ public class HerculeDao {
 		}
 		return listModel;
 	}
-	
-	
+
+
 	public static List<LineModel> getAllLines() throws HerculeTechnicalException {
 		StringBuilder query = new StringBuilder("select * from ");
 		query.append(DBConstantes.T_LINE);
@@ -1020,12 +1020,12 @@ public class HerculeDao {
 			conn = DatabaseConnection.getConnection();
 			pstmt = conn.prepareStatement(query.toString());
 			res = pstmt.executeQuery();
-			
+
 			while (res.next()) {
 				if(listModel == null) {
 					listModel = new ArrayList<LineModel>();
 				}
-				
+
 				LineModel model = new LineModel();
 				model.setIdLine(res.getInt(DBConstantes.T_LINE_ID));
 				model.setCode(res.getString(DBConstantes.T_LINE_CODE));
@@ -1045,8 +1045,8 @@ public class HerculeDao {
 		}
 		return listModel;
 	}
-	
-	
+
+
 	public static List<LineDirectionModel> getAllDirections() throws HerculeTechnicalException {
 		StringBuilder query = new StringBuilder("select * from ");
 		query.append(DBConstantes.T_LINE_DIRECTION);
@@ -1060,12 +1060,12 @@ public class HerculeDao {
 			conn = DatabaseConnection.getConnection();
 			pstmt = conn.prepareStatement(query.toString());
 			res = pstmt.executeQuery();
-			
+
 			while (res.next()) {
 				if(listModel == null) {
 					listModel = new ArrayList<LineDirectionModel>();
 				}
-				
+
 				LineDirectionModel model = new LineDirectionModel();
 				model.setIdDirection(res.getInt(DBConstantes.T_LINE_DIRECTION_ID_DIRECTION));
 				model.setCode(res.getString(DBConstantes.T_LINE_DIRECTION_CODE));
@@ -1079,8 +1079,8 @@ public class HerculeDao {
 		}
 		return listModel;
 	}
-	
-	
+
+
 	public static List<RouteModel> getAllRoutes() throws HerculeTechnicalException {
 		StringBuilder query = new StringBuilder("select * from ");
 		query.append(DBConstantes.T_ROUTE);
@@ -1094,12 +1094,12 @@ public class HerculeDao {
 			conn = DatabaseConnection.getConnection();
 			pstmt = conn.prepareStatement(query.toString());
 			res = pstmt.executeQuery();
-			
+
 			while (res.next()) {
 				if(listModel == null) {
 					listModel = new ArrayList<RouteModel>();
 				}
-				
+
 				RouteModel model = new RouteModel();
 				model.setIdRoute(res.getInt(DBConstantes.T_ROUTE_ID));
 				model.setDestination(res.getString(DBConstantes.T_ROUTE_DESTINATION));
@@ -1117,25 +1117,25 @@ public class HerculeDao {
 		}
 		return listModel;
 	}
-	
-	
+
+
 	public static int getStopAreaFromTSTOPPOINT(String id) throws HerculeTechnicalException {
 		StringBuilder query = new StringBuilder("select id_stop_area from ");
 		query.append(DBConstantes.T_STOP_POINT);
 		query.append(" where id_stop_point_navitia=\"" +id+ "\"");
 		query.append(" LIMIT 1");
-		
+
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet res = null;
 		int idStopArea = -1;
-		
+
 
 		try {
 			conn = DatabaseConnection.getConnection();
 			pstmt = conn.prepareStatement(query.toString());
 			res = pstmt.executeQuery();
-			
+
 			while (res.next()) {
 				idStopArea = res.getInt(DBConstantes.T_STOP_AREA_ID);
 			}
@@ -1146,26 +1146,27 @@ public class HerculeDao {
 		}
 		return idStopArea;
 	}
-	
-	
+
+
 	public static int getDirectionFromTLINEDIRECTION(String code, String libelle) throws HerculeTechnicalException {
+		libelle = libelle.replaceAll("[(].*[)]", "");
 		StringBuilder query = new StringBuilder("select id_direction from ");
 		query.append(DBConstantes.T_LINE_DIRECTION);
 		query.append(" where code = \"" + code + "\"");
 		query.append(" and libelle = \"" + libelle + "\"");
 		query.append(" LIMIT 1");
-		
+
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet res = null;
 		int idDirection = -1;
-		
+
 
 		try {
 			conn = DatabaseConnection.getConnection();
 			pstmt = conn.prepareStatement(query.toString());
 			res = pstmt.executeQuery();
-			
+
 			while (res.next()) {
 				idDirection = res.getInt(DBConstantes.T_LINE_DIRECTION_ID_DIRECTION);
 			}
@@ -1174,9 +1175,13 @@ public class HerculeDao {
 		} finally {
 			close(null, pstmt, res);
 		}
+
+		if(idDirection == -1) {
+			idDirection = HerculeDao.insertDirection(code, libelle);
+		}
 		return idDirection;
 	}
-	
+
 	public static List<StopAreaModel> getAllStopAreaNoFlag () throws HerculeTechnicalException {
 
 		StringBuilder query = new StringBuilder("select * from ");
@@ -1193,12 +1198,12 @@ public class HerculeDao {
 			conn = DatabaseConnection.getConnection();
 			pstmt = conn.prepareStatement(query.toString());
 			res = pstmt.executeQuery();
-			
+
 			while (res.next()) {
 				if(listModel == null) {
 					listModel = new ArrayList<StopAreaModel>();
 				}
-				
+
 				StopAreaModel model = new StopAreaModel();
 				model.setIdNavitia(res.getString(DBConstantes.T_STOP_AREA_ID_NAVITIA));
 				model.setIdStopArea(res.getInt(DBConstantes.T_STOP_AREA_ID));
@@ -1214,9 +1219,9 @@ public class HerculeDao {
 			close(null, pstmt, res);
 		}
 		return listModel;
-	
+
 	}
-	
+
 	public static List<StopAreaModel> getAllStopAreas() throws HerculeTechnicalException {
 		StringBuilder query = new StringBuilder("select * from ");
 		query.append(DBConstantes.T_STOP_AREA);
@@ -1231,12 +1236,12 @@ public class HerculeDao {
 			conn = DatabaseConnection.getConnection();
 			pstmt = conn.prepareStatement(query.toString());
 			res = pstmt.executeQuery();
-			
+
 			while (res.next()) {
 				if(listModel == null) {
 					listModel = new ArrayList<StopAreaModel>();
 				}
-				
+
 				StopAreaModel model = new StopAreaModel();
 				model.setIdNavitia(res.getString(DBConstantes.T_STOP_AREA_ID_NAVITIA));
 				model.setIdStopArea(res.getInt(DBConstantes.T_STOP_AREA_ID));
@@ -1255,7 +1260,7 @@ public class HerculeDao {
 		}
 		return listModel;
 	}
-	
+
 	public static List<StopAreaModel> getAllStopAreasNotCalculated() throws HerculeTechnicalException {
 		StringBuilder query = new StringBuilder("select * from ");
 		query.append(DBConstantes.T_STOP_AREA);
@@ -1270,12 +1275,12 @@ public class HerculeDao {
 			conn = DatabaseConnection.getConnection();
 			pstmt = conn.prepareStatement(query.toString());
 			res = pstmt.executeQuery();
-			
+
 			while (res.next()) {
 				if(listModel == null) {
 					listModel = new ArrayList<StopAreaModel>();
 				}
-				
+
 				StopAreaModel model = new StopAreaModel();
 				model.setIdNavitia(res.getString(DBConstantes.T_STOP_AREA_ID_NAVITIA));
 				model.setIdStopArea(res.getInt(DBConstantes.T_STOP_AREA_ID));
@@ -1292,7 +1297,7 @@ public class HerculeDao {
 		}
 		return listModel;
 	}
-	
+
 	public static List<StopAreaLine> getAllStopAreaLines() throws HerculeTechnicalException {
 		StringBuilder query = new StringBuilder("select * from ");
 		query.append(DBConstantes.T_STOP_AREA_LINE);
@@ -1306,12 +1311,12 @@ public class HerculeDao {
 			conn = DatabaseConnection.getConnection();
 			pstmt = conn.prepareStatement(query.toString());
 			res = pstmt.executeQuery();
-			
+
 			while (res.next()) {
 				if(listModel == null) {
 					listModel = new ArrayList<StopAreaLine>();
 				}
-				
+
 				StopAreaLine model = new StopAreaLine();
 				model.setIdLine(res.getInt(DBConstantes.T_STOP_AREA_LINE_ID_LINE));
 				model.setIdStopArea(res.getInt(DBConstantes.T_STOP_AREA_LINE_ID_STOP_AREA));
@@ -1325,7 +1330,7 @@ public class HerculeDao {
 		}
 		return listModel;
 	}
-	
+
 	public static List<StopAreaRoute> getAllStopAreaRoutes() throws HerculeTechnicalException {
 		StringBuilder query = new StringBuilder("select * from ");
 		query.append(DBConstantes.T_STOP_AREA_ROUTE);
@@ -1339,12 +1344,12 @@ public class HerculeDao {
 			conn = DatabaseConnection.getConnection();
 			pstmt = conn.prepareStatement(query.toString());
 			res = pstmt.executeQuery();
-			
+
 			while (res.next()) {
 				if(listModel == null) {
 					listModel = new ArrayList<StopAreaRoute>();
 				}
-				
+
 				StopAreaRoute model = new StopAreaRoute();
 				model.setIdRoute(res.getInt(DBConstantes.T_STOP_AREA_ROUTE_ID_ROUTE));
 				model.setIdStopArea(res.getInt(DBConstantes.T_STOP_AREA_ROUTE_ID_STOP_AREA));
@@ -1358,7 +1363,7 @@ public class HerculeDao {
 		}
 		return listModel;
 	}
-	
+
 	public static List<StopPointModel> getAllStopPoints() throws HerculeTechnicalException {
 		StringBuilder query = new StringBuilder("select * from ");
 		query.append(DBConstantes.T_STOP_POINT);
@@ -1372,12 +1377,12 @@ public class HerculeDao {
 			conn = DatabaseConnection.getConnection();
 			pstmt = conn.prepareStatement(query.toString());
 			res = pstmt.executeQuery();
-			
+
 			while (res.next()) {
 				if(listModel == null) {
 					listModel = new ArrayList<StopPointModel>();
 				}
-				
+
 				StopPointModel model = new StopPointModel();
 				model.setIdStopPoint(res.getInt(DBConstantes.T_STOP_POINT_ID));
 				model.setIdRoute(res.getInt(DBConstantes.T_STOP_POINT_ID_ROUTE));
@@ -1395,7 +1400,7 @@ public class HerculeDao {
 		}
 		return listModel;
 	}
-	
+
 	public synchronized static void flagToCalculated(int idStopArea) throws HerculeTechnicalException {
 		StringBuilder query = new StringBuilder("update ");
 		query.append(DBConstantes.T_STOP_AREA);
@@ -1416,7 +1421,7 @@ public class HerculeDao {
 			close(null, pstmt, null);
 		}
 	}
-	
+
 
 	/**
 	 * Fermeture de la connexion
